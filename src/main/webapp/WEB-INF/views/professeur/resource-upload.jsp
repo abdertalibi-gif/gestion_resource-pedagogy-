@@ -147,10 +147,7 @@
     <%@ include file="/WEB-INF/includes/sidebar.jsp" %>
 
     <div class="main-content">
-        <header class="topbar">
-            <div class="topbar-left"><button class="sidebar-toggle" id="sidebarToggle" aria-label="Menu"><i class="fas fa-bars"></i></button><span class="topbar-title">${pageTitle}</span></div>
-            <div class="topbar-right"><div class="user-avatar">${nomComplet != null ? nomComplet.substring(0,1).toUpperCase() : 'P'}</div><div class="user-info"><span class="user-name">${nomComplet}</span><span class="user-role">Professeur</span></div></div>
-        </header>
+        <%@ include file="/WEB-INF/includes/topbar.jsp" %>
 
         <div class="content-wrapper">
 
@@ -268,14 +265,8 @@
         </div>
     </div>
 
+    <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
     <script>
-        /* Sidebar toggle */
-        var sidebarToggle=document.getElementById('sidebarToggle'),
-            sidebar=document.getElementById('sidebar'),
-            overlay=document.getElementById('sidebarOverlay');
-        if(sidebarToggle)sidebarToggle.addEventListener('click',function(){sidebar.classList.toggle('open');overlay.classList.toggle('open')});
-        if(overlay)overlay.addEventListener('click',function(){sidebar.classList.remove('open');overlay.classList.remove('open')});
-
         /* Afficher nom du fichier sélectionné */
         function updateFileName(input){
             var file=input.files[0];

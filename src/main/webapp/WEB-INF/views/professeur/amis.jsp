@@ -490,18 +490,7 @@
 <body>
     <%@ include file="/WEB-INF/includes/sidebar.jsp" %>
     <div class="main-content">
-        <header class="topbar">
-            <div class="topbar-left">
-                <button class="hamburger" type="button" onclick="toggleSidebar()" aria-label="Menu">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <h2 class="page-title">${pageTitle}</h2>
-            </div>
-            <div class="topbar-right">
-                <div class="profile-avatar">${nomComplet != null && nomComplet.length() > 0 ? nomComplet.substring(0,1) : 'P'}</div>
-                <span class="profile-name">${nomComplet}</span>
-            </div>
-        </header>
+        <%@ include file="/WEB-INF/includes/topbar.jsp" %>
 
         <div class="content-wrapper">
             <c:if test="${not empty msgSuccess}">
@@ -632,12 +621,6 @@
                 var name = (card.getAttribute('data-name') || '').toLowerCase();
                 card.style.display = name.indexOf(q) >= 0 ? '' : 'none';
             });
-        }
-        function toggleSidebar() {
-            var s = document.getElementById('sidebar');
-            var o = document.getElementById('sidebarOverlay');
-            if (s) s.classList.toggle('open');
-            if (o) o.classList.toggle('open');
         }
     </script>
     <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>

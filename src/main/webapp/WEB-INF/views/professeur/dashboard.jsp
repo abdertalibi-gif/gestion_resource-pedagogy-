@@ -515,10 +515,7 @@
     <%@ include file="/WEB-INF/includes/sidebar.jsp" %>
 
     <div class="main-content">
-        <header class="topbar">
-            <div class="topbar-left"><button class="sidebar-toggle" id="sidebarToggle" aria-label="Menu"><i class="fas fa-bars"></i></button><span class="topbar-title">${pageTitle}</span></div>
-            <div class="topbar-right"><div class="user-avatar">${nomComplet != null ? nomComplet.substring(0,1).toUpperCase() : 'P'}</div><div class="user-info"><span class="user-name">${nomComplet}</span><span class="user-role">Professeur</span></div></div>
-        </header>
+        <%@ include file="/WEB-INF/includes/topbar.jsp" %>
 
         <div class="content-wrapper">
             <c:if test="${not empty msgSuccess}"><div class="alert alert-success"><i class="fas fa-check-circle"></i> ${msgSuccess}<button class="alert-close" onclick="this.parentElement.remove()">&times;</button></div></c:if>
@@ -555,6 +552,7 @@
             </div>
         </div>
     </div>
-    <script>const s=document.getElementById('sidebarToggle'),b=document.getElementById('sidebar'),o=document.getElementById('sidebarOverlay');if(s)s.addEventListener('click',function(){b.classList.toggle('open');o.classList.toggle('open')});if(o)o.addEventListener('click',function(){b.classList.remove('open');o.classList.remove('open')})</script>
+    <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/dashboard.js"></script>
 </body>
 </html>
