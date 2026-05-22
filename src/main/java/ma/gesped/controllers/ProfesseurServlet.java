@@ -104,6 +104,7 @@ public class ProfesseurServlet extends HttpServlet {
                 .stream().limit(5).toList();
         int nbNonLues = notificationService.countNonLues(user.getIdUtilisateur());
 
+        req.setAttribute("activeMenu", "dashboard");
         req.setAttribute("modules", modules);
         req.setAttribute("nbRessources", nbRessources);
         req.setAttribute("dernieresRessources", dernieresRessources);

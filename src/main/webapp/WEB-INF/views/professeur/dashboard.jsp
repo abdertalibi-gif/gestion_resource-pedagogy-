@@ -1,5 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ page import="models.Utilisateur" %>
+<%
+    request.setAttribute("role", "PROFESSEUR");
+    Utilisateur u = (Utilisateur) session.getAttribute("utilisateur");
+    request.setAttribute("nomComplet", u != null ? u.getNomComplet() : "");
+    request.setAttribute("pageTitle", "Tableau de bord");
+    request.setAttribute("activeMenu", "dashboard");
+%>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -504,19 +512,7 @@
     </style>
 </head>
 <body>
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-brand"><span class="brand-name">GesPed</span><span class="brand-role">Espace Professeur</span></div>
-        <div class="sidebar-section"><div class="sidebar-section-label">Navigation</div>
-            <a href="${pageContext.request.contextPath}/professeur/dashboard" class="nav-item active"><i class="fas fa-th-large"></i> Tableau de bord</a>
-            <a href="${pageContext.request.contextPath}/professeur/ressources" class="nav-item"><i class="fas fa-folder-open"></i> Mes ressources</a>
-            <a href="${pageContext.request.contextPath}/professeur/amis" class="nav-item"><i class="fas fa-user-friends"></i> Amis</a>
-        </div>
-        <div class="sidebar-section"><div class="sidebar-section-label">Actions</div>
-            <a href="${pageContext.request.contextPath}/professeur/ressource/ajouter" class="nav-item"><i class="fas fa-plus-circle"></i> Ajouter ressource</a>
-        </div>
-        <div class="sidebar-footer"><a href="${pageContext.request.contextPath}/logout" class="nav-item-logout"><i class="fas fa-sign-out-alt"></i> D&eacute;connexion</a></div>
-    </aside>
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <%@ include file="/WEB-INF/includes/sidebar.jsp" %>
 
     <div class="main-content">
         <header class="topbar">

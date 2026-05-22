@@ -144,18 +144,7 @@
     </style>
 </head>
 <body>
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-brand"><span class="brand-name">GesPed</span><span class="brand-role">Espace Professeur</span></div>
-        <div class="sidebar-section"><div class="sidebar-section-label">Navigation</div>
-            <a href="${pageContext.request.contextPath}/professeur/dashboard" class="nav-item"><i class="fas fa-th-large"></i> Tableau de bord</a>
-            <a href="${pageContext.request.contextPath}/professeur/ressources" class="nav-item active"><i class="fas fa-folder-open"></i> Mes ressources</a>
-        </div>
-        <div class="sidebar-section"><div class="sidebar-section-label">Actions</div>
-            <a href="${pageContext.request.contextPath}/professeur/ressource/ajouter" class="nav-item"><i class="fas fa-plus-circle"></i> Ajouter ressource</a>
-        </div>
-        <div class="sidebar-footer"><a href="${pageContext.request.contextPath}/logout" class="nav-item-logout"><i class="fas fa-sign-out-alt"></i> D&eacute;connexion</a></div>
-    </aside>
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <%@ include file="/WEB-INF/includes/sidebar.jsp" %>
 
     <div class="main-content">
         <header class="topbar">
