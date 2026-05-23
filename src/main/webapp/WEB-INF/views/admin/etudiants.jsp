@@ -684,6 +684,9 @@
             .search-box input { width: 100%; }
         }
     </style>
+
+    <!-- Styles global (design unifié) -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
 </head>
 <body>
     <aside class="sidebar" id="sidebar">

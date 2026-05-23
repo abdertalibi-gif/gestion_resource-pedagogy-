@@ -33,11 +33,21 @@
             --sidebar-dim:     #6fa3bb;
             --sidebar-width:   230px;
 
-            --topbar-bg:       #ffffff;
+            /* ── TOPBAR ORANGE ── */
+            --topbar-bg:       #e8a020;
+            --topbar-bg-dark:  #d48e15;
             --topbar-height:   56px;
-            --topbar-border:   #dde6ec;
+            --topbar-border:   #cc8518;
+            --topbar-text:     #ffffff;
+            --topbar-text-dim: rgba(255,255,255,0.75);
 
+            /* ── ORANGE BOUTONS ── */
             --orange:          #e8a020;
+            --orange-dark:     #d48e15;
+            --orange-darker:   #b87812;
+            --orange-light:    #fff5e6;
+            --orange-pale:     #fdf0d8;
+
             --teal-dark:       #1a5f7a;
             --teal-mid:        #1e7090;
             --teal-light:      #e8f4f8;
@@ -155,7 +165,7 @@
             display: none;
             background: none;
             border: none;
-            color: var(--text-dark);
+            color: var(--topbar-text);
             font-size: 20px;
             padding: 4px;
         }
@@ -168,7 +178,7 @@
         }
 
         /* ============================================================
-           TOPBAR
+           TOPBAR — FOND ORANGE
            ============================================================ */
         .main-content {
             margin-left: var(--sidebar-width);
@@ -182,57 +192,61 @@
             position: sticky;
             top: 0; z-index: 90;
             background: var(--topbar-bg);
-            border-bottom: 1px solid var(--topbar-border);
+            border-bottom: 2px solid var(--topbar-border);
             height: var(--topbar-height);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 24px;
-        }
-        .topbar::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 2px;
-            background: var(--orange);
+            box-shadow: 0 2px 10px rgba(232,160,32,0.30);
         }
         .topbar-left { display: flex; align-items: center; gap: 10px; }
-        .topbar-title { font-size: 15px; font-weight: 600; color: var(--text-dark); }
+        .topbar-title { font-size: 15px; font-weight: 600; color: var(--topbar-text); }
         .topbar-right { display: flex; align-items: center; gap: 16px; }
 
         .topbar-icon-btn {
-            background: none; border: none;
-            color: var(--text-muted);
-            font-size: 17px;
-            display: flex; align-items: center;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.20);
+            border-radius: var(--radius-sm);
+            color: var(--topbar-text);
+            font-size: 16px;
+            width: 34px; height: 34px;
+            display: flex; align-items: center; justify-content: center;
             position: relative;
+            transition: background 0.15s;
         }
-        .topbar-icon-btn:hover { color: var(--teal-dark); }
+        .topbar-icon-btn:hover {
+            background: rgba(255,255,255,0.28);
+        }
 
         .notif-badge {
             position: absolute;
-            top: -4px; right: -5px;
-            width: 16px; height: 16px;
+            top: -5px; right: -5px;
+            width: 17px; height: 17px;
             border-radius: 50%;
-            background: var(--orange);
+            background: #d64545;
             color: #fff;
             font-size: 9px;
             display: flex; align-items: center; justify-content: center;
             font-weight: 700;
+            border: 2px solid var(--topbar-bg);
         }
 
         .user-avatar {
             width: 34px; height: 34px;
             border-radius: 50%;
-            background: var(--teal-dark);
+            background: rgba(255,255,255,0.22);
+            border: 2px solid rgba(255,255,255,0.40);
             color: #fff;
             display: flex; align-items: center; justify-content: center;
-            font-size: 12px; font-weight: 600;
+            font-size: 13px; font-weight: 700;
             cursor: pointer;
+            transition: background 0.15s;
         }
+        .user-avatar:hover { background: rgba(255,255,255,0.35); }
         .user-info { display: flex; flex-direction: column; align-items: flex-start; }
-        .user-info .user-name { font-size: 13px; font-weight: 600; color: var(--text-dark); }
-        .user-info .user-role { font-size: 11px; color: var(--text-muted); }
+        .user-info .user-name { font-size: 13px; font-weight: 600; color: var(--topbar-text); }
+        .user-info .user-role { font-size: 11px; color: var(--topbar-text-dim); }
 
         /* ============================================================
            CONTENU PRINCIPAL
@@ -244,7 +258,7 @@
             font-family: 'Raleway', sans-serif;
             font-size: 26px;
             font-weight: 800;
-            color: var(--teal-dark);
+            color: var(--orange-dark);
         }
         .page-header p { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
 
@@ -281,11 +295,11 @@
             height: 3px;
         }
 
-        .grad-deep::after   { background: var(--teal-dark); }
-        .grad-mid::after    { background: var(--blue-mid); }
-        .grad-bright::after { background: var(--green-accent); }
-        .grad-teal::after   { background: var(--blue-accent); }
-        .grad-orange::after { background: var(--orange); }
+        .grad-deep::after   { background: var(--orange); }
+        .grad-mid::after    { background: var(--orange-dark); }
+        .grad-bright::after { background: var(--orange-darker); }
+        .grad-teal::after   { background: #c75b12; }
+        .grad-orange::after { background: #b87812; }
 
         .stat-card-icon {
             width: 40px; height: 40px;
@@ -294,11 +308,11 @@
             font-size: 18px;
             flex-shrink: 0;
         }
-        .grad-deep   .stat-card-icon { background: #deedf4; color: var(--teal-dark); }
-        .grad-mid    .stat-card-icon { background: #ddf0f7; color: var(--blue-mid); }
-        .grad-bright .stat-card-icon { background: #d8f5ec; color: var(--green-accent); }
-        .grad-teal   .stat-card-icon { background: #dce8f2; color: var(--blue-accent); }
-        .grad-orange .stat-card-icon { background: #fdf0d8; color: var(--orange); }
+        .grad-deep   .stat-card-icon { background: var(--orange-pale); color: var(--orange); }
+        .grad-mid    .stat-card-icon { background: var(--orange-pale); color: var(--orange-dark); }
+        .grad-bright .stat-card-icon { background: var(--orange-light); color: var(--orange-darker); }
+        .grad-teal   .stat-card-icon { background: #fde8d8; color: #c75b12; }
+        .grad-orange .stat-card-icon { background: var(--orange-pale); color: #b87812; }
 
         .stat-card-info { display: flex; flex-direction: column; }
         .stat-card-number {
@@ -334,27 +348,106 @@
             display: flex; align-items: center; gap: 8px;
             font-family: 'Open Sans', sans-serif;
         }
-        .section-header h3 i { color: var(--teal-mid); }
+        .section-header h3 i { color: var(--orange); }
 
+        /* ============================================================
+           BOUTONS — STYLE ORANGE
+           ============================================================ */
         .btn {
             display: inline-flex; align-items: center; gap: 6px;
             border-radius: var(--radius-sm);
-            font-size: 13px; font-weight: 500;
-            padding: 7px 14px;
-            transition: all 0.15s;
+            font-size: 13px; font-weight: 600;
+            padding: 7px 16px;
+            transition: all 0.18s;
+            border: none;
+            cursor: pointer;
         }
         .btn-sm { padding: 5px 12px; font-size: 12px; }
-        .btn-outline {
-            background: none;
-            border: 1px solid var(--border);
-            color: var(--teal-mid);
+
+        /* Bouton principal — orange plein */
+        .btn-primary {
+            background: var(--orange);
+            color: #ffffff;
+            border: none;
+            box-shadow: 0 2px 6px rgba(232,160,32,0.35);
         }
-        .btn-outline:hover {
-            background: var(--teal-light);
-            border-color: var(--teal-mid);
-            color: var(--teal-dark);
+        .btn-primary:hover {
+            background: var(--orange-dark);
+            box-shadow: 0 4px 12px rgba(232,160,32,0.45);
+            transform: translateY(-1px);
+        }
+        .btn-primary:active {
+            background: var(--orange-darker);
+            transform: translateY(0);
         }
 
+        /* Bouton outline — contour orange */
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--orange);
+            color: var(--orange);
+        }
+        .btn-outline:hover {
+            background: var(--orange);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(232,160,32,0.30);
+        }
+
+        /* Bouton secondaire — orange clair */
+        .btn-secondary {
+            background: var(--orange-light);
+            color: var(--orange-darker);
+            border: 1px solid var(--orange-pale);
+        }
+        .btn-secondary:hover {
+            background: var(--orange-pale);
+            color: var(--orange-dark);
+        }
+
+        /* Bouton danger (supprimer) */
+        .btn-danger {
+            background: #d64545;
+            color: #ffffff;
+            border: none;
+        }
+        .btn-danger:hover {
+            background: #b83535;
+        }
+
+        /* Bouton warning */
+        .btn-warning {
+            background: #f0ad4e;
+            color: #ffffff;
+            border: none;
+        }
+        .btn-warning:hover {
+            background: #ec971f;
+        }
+
+        /* Bouton success */
+        .btn-success {
+            background: var(--green-accent);
+            color: #ffffff;
+            border: none;
+        }
+        .btn-success:hover {
+            background: #15a077;
+        }
+
+        /* Bouton ghost */
+        .btn-ghost {
+            background: transparent;
+            color: var(--orange);
+            border: none;
+            padding: 7px 10px;
+        }
+        .btn-ghost:hover {
+            background: var(--orange-light);
+        }
+
+        /* ============================================================
+           TABLE
+           ============================================================ */
         .table-responsive { overflow-x: auto; }
 
         .table { width: 100%; border-collapse: collapse; font-size: 13px; }
@@ -364,7 +457,7 @@
             text-align: left;
             font-size: 11px; font-weight: 600;
             text-transform: uppercase; letter-spacing: 0.06em;
-            color: var(--teal-mid);
+            color: var(--orange-dark);
             border-bottom: 1px solid var(--border);
             white-space: nowrap;
         }
@@ -375,7 +468,7 @@
             vertical-align: middle;
         }
         .table tbody tr:last-child td { border-bottom: none; }
-        .table tbody tr:hover { background: #f8fafc; }
+        .table tbody tr:hover { background: #fffbf2; }
 
         .table-file { display: flex; align-items: center; gap: 8px; }
         .table-file i { font-size: 16px; }
@@ -420,13 +513,13 @@
         .empty-state-icon {
             width: 72px; height: 72px;
             border-radius: 50%;
-            background: var(--teal-light);
+            background: var(--orange-light);
             display: flex; align-items: center; justify-content: center;
             margin-bottom: 16px;
         }
         .empty-state-icon i {
             font-size: 28px;
-            color: var(--teal-mid);
+            color: var(--orange);
         }
         .empty-state-title {
             font-size: 15px;
@@ -442,14 +535,6 @@
         }
         .empty-state-action {
             margin-top: 16px;
-        }
-        .btn-primary {
-            background: var(--teal-dark);
-            color: #ffffff;
-            border: none;
-        }
-        .btn-primary:hover {
-            background: var(--teal-mid);
         }
 
         /* ============================================================
@@ -491,6 +576,10 @@
             .content-wrapper { padding: 20px 16px 32px; }
         }
     </style>
+
+    <!-- Styles global (design unifié) -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/dashboard.css">
 </head>
 <body>
 
@@ -540,7 +629,7 @@
     <!-- ======================== CONTENU PRINCIPAL ======================== -->
     <div class="main-content">
 
-        <!-- TOPBAR -->
+        <!-- TOPBAR — FOND ORANGE -->
         <header class="topbar">
             <div class="topbar-left">
                 <button class="sidebar-toggle" id="sidebarToggle" aria-label="Menu">

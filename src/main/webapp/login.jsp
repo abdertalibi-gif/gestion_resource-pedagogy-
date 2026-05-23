@@ -369,11 +369,11 @@
     <!-- ===== GAUCHE bleu ===== -->
     <div class="side-blue">
       <div class="deco-formulas">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
+        <div>(1+x+y+2a)·(3a+3g)</div>
+        <div>∫₀^∞ e^(-t²) dt = √π/2</div>
+        <div>∑ xᵢ² = ‖x‖² cos(θ)</div>
+        <div>∇f = (∂f/∂x, ∂f/∂y)</div>
+        <div>y = ax² + bx + c</div>
       </div>
       <div class="deco-num">G</div>
 

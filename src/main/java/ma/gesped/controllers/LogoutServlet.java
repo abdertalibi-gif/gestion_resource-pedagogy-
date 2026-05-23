@@ -15,6 +15,7 @@ public class LogoutServlet extends HttpServlet {
         if (session != null) {
             session.invalidate();
         }
-        resp.sendRedirect(req.getContextPath() + "/login");
+        // Afficher le message "déconnecté" sur la page de login
+        resp.sendRedirect(req.getContextPath() + "/login?logout=1");
     }
 }

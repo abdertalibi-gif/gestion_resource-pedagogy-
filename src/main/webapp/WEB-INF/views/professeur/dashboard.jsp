@@ -502,6 +502,10 @@
             .content-wrapper { padding: 20px 16px 32px; }
         }
     </style>
+
+    <!-- Styles global (design unifié) -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/dashboard.css">
 </head>
 <body>
     <aside class="sidebar" id="sidebar">
