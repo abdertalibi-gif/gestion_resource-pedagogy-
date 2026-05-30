@@ -77,6 +77,7 @@
                             <th>Nom complet</th>
                             <th>Email</th>
                             <th>Telephone</th>
+                            <th>CNE</th>
                             <th>Role</th>
                             <th>Filiere</th>
                             <th>Semestre</th>
@@ -98,6 +99,7 @@
                                 </td>
                                 <td>${u.email}</td>
                                 <td>${u.telephone}</td>
+                                <td>${not empty u.cne ? u.cne : '-'}</td>
                                 <td>
                                     <span class="badge badge-${u.role.nomRole.toLowerCase()}">
                                         ${u.role.nomRole}

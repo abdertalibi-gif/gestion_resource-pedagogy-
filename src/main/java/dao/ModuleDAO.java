@@ -45,6 +45,17 @@ public class ModuleDAO {
         "WHERE m.id_filiere = ? AND m.id_semestre = ? " +
         "ORDER BY m.code_module";
 
+    private static final String FIND_BY_FILIERE =
+        "SELECT m.*, f.nom_filiere, s.nom_semestre, " +
+        "CONCAT(u.prenom, ' ', u.nom) AS nom_prof " +
+        "FROM modules m " +
+        "JOIN filieres f ON m.id_filiere = f.id_filiere " +
+        "JOIN semestres s ON m.id_semestre = s.id_semestre " +
+        "LEFT JOIN affectations_modules am ON m.id_module = am.id_module " +
+        "LEFT JOIN utilisateurs u ON am.id_professeur = u.id_utilisateur " +
+        "WHERE m.id_filiere = ? " +
+        "ORDER BY s.nom_semestre, m.code_module";
+
     private static final String FIND_BY_PROFESSEUR =
         "SELECT m.*, f.nom_filiere, s.nom_semestre, " +
         "CONCAT(u.prenom, ' ', u.nom) AS nom_prof " +
@@ -128,6 +139,20 @@ public class ModuleDAO {
             }
         } catch (SQLException e) {
             System.err.println("ModuleDAO.findByFiliereSemestre: " + e.getMessage());
+        }
+        return list;
+    }
+
+    public List<Module> findByFiliere(int idFiliere) {
+        List<Module> list = new ArrayList<>();
+        try (Connection conn = DAOFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(FIND_BY_FILIERE)) {
+            ps.setInt(1, idFiliere);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) list.add(mapResultSet(rs));
+            }
+        } catch (SQLException e) {
+            System.err.println("ModuleDAO.findByFiliere: " + e.getMessage());
         }
         return list;
     }

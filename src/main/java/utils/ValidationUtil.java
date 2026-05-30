@@ -15,7 +15,8 @@ public final class ValidationUtil {
     private ValidationUtil() {}
 
     public static List<String> validerUtilisateur(String nom, String prenom,
-                                                   String email, String motDePasse) {
+                                                   String email, String motDePasse,
+                                                   String cne, String role) {
         List<String> erreurs = new ArrayList<>();
 
         if (nom == null || nom.trim().isEmpty()) {
@@ -34,10 +35,20 @@ public final class ValidationUtil {
             erreurs.add("Format d'email invalide");
         }
 
-        if (motDePasse == null || motDePasse.isEmpty()) {
-            erreurs.add("Le mot de passe est obligatoire");
-        } else if (motDePasse.length() < 6) {
-            erreurs.add("Le mot de passe doit contenir au moins 6 caracteres");
+        if (motDePasse != null) {
+            if (motDePasse.isEmpty()) {
+                erreurs.add("Le mot de passe est obligatoire");
+            } else if (motDePasse.length() < 6) {
+                erreurs.add("Le mot de passe doit contenir au moins 6 caracteres");
+            }
+        }
+
+        if ("ETUDIANT".equals(role)) {
+            if (cne == null || cne.trim().isEmpty()) {
+                erreurs.add("Le CNE est obligatoire pour l'inscription. Veuillez le saisir avant de continuer.");
+            } else if (cne.trim().length() < 8 || cne.trim().length() > 20) {
+                erreurs.add("Le CNE doit contenir entre 8 et 20 caracteres");
+            }
         }
 
         return erreurs;

@@ -44,6 +44,8 @@ public class RegisterServlet extends HttpServlet {
         u.setEmail(req.getParameter("email"));
         u.setMotDePasse(req.getParameter("motDePasse"));
         u.setTelephone(req.getParameter("telephone"));
+        String cne = req.getParameter("cne");
+        u.setCne(cne != null && !cne.isEmpty() ? cne : null);
 
         String roleNom = req.getParameter("role");
         Role role = new Role();

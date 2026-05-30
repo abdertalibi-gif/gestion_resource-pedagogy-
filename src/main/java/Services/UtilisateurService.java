@@ -42,8 +42,9 @@ public class UtilisateurService {
      * Utilise par l'admin - le compte est directement actif (ACCEPTE).
      */
     public ServiceResult<Utilisateur> create(Utilisateur u) {
+        String role = u.getRole() != null ? u.getRole().getNomRole() : null;
         List<String> erreurs = ValidationUtil.validerUtilisateur(
-            u.getNom(), u.getPrenom(), u.getEmail(), u.getMotDePasse()
+            u.getNom(), u.getPrenom(), u.getEmail(), u.getMotDePasse(), u.getCne(), role
         );
         if (!erreurs.isEmpty()) {
             return ServiceResult.failure(erreurs);
@@ -70,8 +71,9 @@ public class UtilisateurService {
      * Inscription via le formulaire public - le compte est en attente de validation.
      */
     public ServiceResult<Utilisateur> register(Utilisateur u) {
+        String role = u.getRole() != null ? u.getRole().getNomRole() : null;
         List<String> erreurs = ValidationUtil.validerUtilisateur(
-            u.getNom(), u.getPrenom(), u.getEmail(), u.getMotDePasse()
+            u.getNom(), u.getPrenom(), u.getEmail(), u.getMotDePasse(), u.getCne(), role
         );
         if (!erreurs.isEmpty()) {
             return ServiceResult.failure(erreurs);
@@ -95,8 +97,9 @@ public class UtilisateurService {
     }
 
     public ServiceResult<Utilisateur> update(Utilisateur u) {
+        String role = u.getRole() != null ? u.getRole().getNomRole() : null;
         List<String> erreurs = ValidationUtil.validerUtilisateur(
-            u.getNom(), u.getPrenom(), u.getEmail(), "dummy"
+            u.getNom(), u.getPrenom(), u.getEmail(), null, u.getCne(), role
         );
         if (!erreurs.isEmpty()) {
             return ServiceResult.failure(erreurs);

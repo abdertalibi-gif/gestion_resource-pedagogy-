@@ -61,12 +61,12 @@ public class UtilisateurDAO {
 
     private static final String INSERT =
         "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, telephone, " +
-        "photo, statut, id_role, id_filiere, id_semestre) " +
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        "photo, statut, id_role, id_filiere, id_semestre, cne) " +
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     private static final String UPDATE =
         "UPDATE utilisateurs SET nom=?, prenom=?, email=?, telephone=?, " +
-        "photo=?, statut=?, id_role=?, id_filiere=?, id_semestre=? " +
+        "photo=?, statut=?, id_role=?, id_filiere=?, id_semestre=?, cne=? " +
         "WHERE id_utilisateur=?";
 
     private static final String UPDATE_PASSWORD =
@@ -93,6 +93,7 @@ public class UtilisateurDAO {
         u.setMotDePasse(rs.getString("mot_de_passe"));
         u.setPhoto(rs.getString("photo"));
         u.setTelephone(rs.getString("telephone"));
+        u.setCne(rs.getString("cne"));
 
         Timestamp ts = rs.getTimestamp("date_creation");
         if (ts != null) u.setDateCreation(ts.toLocalDateTime());
@@ -221,6 +222,8 @@ public class UtilisateurDAO {
                 ps.setNull(10, Types.INTEGER);
             }
 
+            ps.setString(11, u.getCne());
+
             ps.executeUpdate();
             try (ResultSet keys = ps.getGeneratedKeys()) {
                 if (keys.next()) return keys.getInt(1);
@@ -260,7 +263,8 @@ public class UtilisateurDAO {
                 ps.setNull(9, Types.INTEGER);
             }
 
-            ps.setInt(10, u.getIdUtilisateur());
+            ps.setString(10, u.getCne());
+            ps.setInt(11, u.getIdUtilisateur());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("UtilisateurDAO.update: " + e.getMessage());

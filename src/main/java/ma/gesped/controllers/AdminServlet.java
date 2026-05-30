@@ -67,6 +67,7 @@ public class AdminServlet extends HttpServlet {
             case "/module/supprimer" -> deleteModule(req, resp);
             case "/filieres" -> showFilieres(req, resp);
             case "/filiere/ajouter" -> showFiliereForm(req, resp);
+            case "/filiere/voir" -> showFiliereVoir(req, resp);
             case "/filiere/modifier" -> showFiliereForm(req, resp);
             case "/filiere/supprimer" -> deleteFiliere(req, resp);
             case "/semestres" -> showSemestres(req, resp);
@@ -234,6 +235,8 @@ public class AdminServlet extends HttpServlet {
         u.setPrenom(req.getParameter("prenom"));
         u.setEmail(req.getParameter("email"));
         u.setTelephone(req.getParameter("telephone"));
+        String cne = req.getParameter("cne");
+        u.setCne(cne != null && !cne.isEmpty() ? cne : null);
 
         String roleNom = req.getParameter("role");
         Role role = new Role();
@@ -350,6 +353,8 @@ public class AdminServlet extends HttpServlet {
         u.setEmail(req.getParameter("email"));
         u.setMotDePasse(req.getParameter("motDePasse"));
         u.setTelephone(req.getParameter("telephone"));
+        String cne = req.getParameter("cne");
+        u.setCne(cne != null && !cne.isEmpty() ? cne : null);
 
         Role role = new Role();
         role.setNomRole(req.getParameter("role"));
@@ -476,6 +481,20 @@ public class AdminServlet extends HttpServlet {
         }
         req.setAttribute("editMode", editMode);
         req.getRequestDispatcher(Constants.VIEW_ADMIN_FILIERE_FORM).forward(req, resp);
+    }
+
+    private void showFiliereVoir(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        Filiere f = filiereService.findById(id);
+        List<models.Module> modules = moduleService.findByFiliere(id);
+        List<models.Semestre> semestres = semestreService.findAll();
+        req.setAttribute("filiere", f);
+        req.setAttribute("modules", modules);
+        req.setAttribute("semestres", semestres);
+        req.setAttribute("pageTitle", "Filiere - " + f.getNomFiliere());
+        req.setAttribute("activeMenu", "filieres");
+        req.getRequestDispatcher(Constants.VIEW_ADMIN_FILIERE_VOIR).forward(req, resp);
     }
 
     private void createFiliere(HttpServletRequest req, HttpServletResponse resp)

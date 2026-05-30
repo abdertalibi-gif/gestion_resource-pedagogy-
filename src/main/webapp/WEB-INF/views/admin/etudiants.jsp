@@ -67,6 +67,7 @@
                                     <tr>
                                         <th>Nom complet</th>
                                         <th>Email</th>
+                                        <th>CNE</th>
                                         <th>Fili&egrave;re</th>
                                         <th>Statut</th>
                                         <th style="text-align:center">Actions</th>
@@ -82,6 +83,7 @@
                                                 </div>
                                             </td>
                                             <td class="email-cell"><i class="fas fa-envelope"></i> ${e.email}</td>
+                                            <td>${not empty e.cne ? e.cne : '-'}</td>
                                             <td>
                                                 <c:choose>
                                                     <c:when test="${e.filiere != null}">

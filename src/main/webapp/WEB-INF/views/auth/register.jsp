@@ -140,6 +140,15 @@
               </div>
             </div>
 
+            <div class="fgroup" id="cneGroup" style="display:none">
+              <label class="flabel" for="cne"><i class="fas fa-id-card"></i>CNE</label>
+              <div class="finput-wrap">
+                <i class="fas fa-id-card finput-icon"></i>
+                <input type="text" id="cne" name="cne" class="finput" placeholder="Ex: E123456789"
+                       value="${utilisateur.cne}">
+              </div>
+            </div>
+
             <div class="fgroup">
               <label class="flabel" for="role"><i class="fas fa-user-tag"></i>Vous êtes</label>
               <div class="finput-wrap">
@@ -229,12 +238,15 @@
       var role = document.getElementById('role').value;
       var fg = document.getElementById('filiereGroup');
       var sg = document.getElementById('semestreGroup');
+      var cg = document.getElementById('cneGroup');
       if (role === 'ETUDIANT') {
         fg.style.display = '';
         sg.style.display = '';
+        cg.style.display = '';
       } else {
         fg.style.display = 'none';
         sg.style.display = 'none';
+        cg.style.display = 'none';
       }
     }
     toggleRoleFields();

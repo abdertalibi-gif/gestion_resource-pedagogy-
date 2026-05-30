@@ -26,6 +26,9 @@ public class ModuleService {
     public List<Module> findByFiliereSemestre(int idFiliere, int idSemestre) {
         return moduleDAO.findByFiliereSemestre(idFiliere, idSemestre);
     }
+    public List<Module> findByFiliere(int idFiliere) {
+        return moduleDAO.findByFiliere(idFiliere);
+    }
 
     public List<Module> findByProfesseur(int idProf) {
         return moduleDAO.findByProfesseur(idProf);

@@ -103,6 +103,12 @@
                                placeholder="0600000000">
                     </div>
 
+                    <div class="form-group hidden" id="cneGroup">
+                        <label for="cne">CNE <span class="required">*</span></label>
+                        <input type="text" id="cne" name="cne" value="${utilisateur.cne}"
+                               placeholder="Ex: E123456789">
+                    </div>
+
                     <c:if test="${not editMode}">
                         <div class="form-group">
                             <label for="motDePasse">Mot de passe <span class="required">*</span></label>
@@ -162,15 +168,17 @@
 </h3>
     <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
     <script>
-        // Afficher filiere/semestre uniquement pour le role ETUDIANT
+        // Afficher filiere/semestre/cne uniquement pour le role ETUDIANT
         const roleSelect = document.getElementById('role');
         const filiereGroup = document.getElementById('filiereGroup');
         const semestreGroup = document.getElementById('semestreGroup');
+        const cneGroup = document.getElementById('cneGroup');
 
         function toggleFields() {
             const isEtudiant = roleSelect.value === 'ETUDIANT';
             filiereGroup.style.display = isEtudiant ? '' : 'none';
             semestreGroup.style.display = isEtudiant ? '' : 'none';
+            cneGroup.style.display = isEtudiant ? '' : 'none';
         }
 
         roleSelect.addEventListener('change', toggleFields);

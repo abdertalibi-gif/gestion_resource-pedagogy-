@@ -89,6 +89,7 @@ public final class Constants {
 
     // ==================== VUES ADMIN (demandes inscription) ====================
     public static final String VIEW_ADMIN_DEMANDES = "/WEB-INF/views/admin/demandes.jsp";
+    public static final String VIEW_ADMIN_FILIERE_VOIR = "/WEB-INF/views/admin/filiere-voir.jsp";
 
     // ==================== VUES ERREURS ====================
     public static final String VIEW_403 = "/WEB-INF/views/error/403.jsp";

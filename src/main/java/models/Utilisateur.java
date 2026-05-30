@@ -13,6 +13,7 @@ public class Utilisateur implements Serializable {
     private String motDePasse;
     private String photo;
     private String telephone;
+    private String cne;
     private LocalDateTime dateCreation;
     private String statut;
     private Role role;
@@ -47,6 +48,9 @@ public class Utilisateur implements Serializable {
 
     public String getTelephone() { return telephone; }
     public void setTelephone(String telephone) { this.telephone = telephone; }
+
+    public String getCne() { return cne; }
+    public void setCne(String cne) { this.cne = cne; }
 
     public LocalDateTime getDateCreation() { return dateCreation; }
     public void setDateCreation(LocalDateTime dateCreation) { this.dateCreation = dateCreation; }
