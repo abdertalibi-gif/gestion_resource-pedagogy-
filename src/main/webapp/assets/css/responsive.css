@@ -1,0 +1,118 @@
+/* ================================================================
+   RESPONSIVE — Consolidated @media queries
+   Sources: style.css, dashboard.css, index.jsp, login.jsp,
+   forgot-password.jsp, reset-password.jsp, all admin/, professeur/,
+   etudiant/ JSP pages
+   ================================================================ */
+
+/* ── ≥1200px ── */
+@media (max-width:1200px) {
+  .stats-grid { grid-template-columns:repeat(3,1fr); }
+  .stats-cards { grid-template-columns:repeat(3,1fr); }
+}
+
+/* ── ≥1024px ── */
+@media (max-width:1024px) {
+  .features-grid { grid-template-columns: repeat(2,1fr); }
+}
+
+/* ── ≥900px ── */
+@media (max-width:900px) {
+  .sidebar { transform:translateX(-100%); }
+  .sidebar.open { transform:translateX(0); }
+  .main-content { margin-left:0; }
+  .stats-grid { grid-template-columns:repeat(2,1fr); }
+  .content-wrapper { padding:20px 16px; }
+  .sidebar-overlay {
+    display:none; position:fixed; inset:0;
+    background:rgba(0,0,0,0.4); z-index:99;
+  }
+  .sidebar-overlay.show { display:block; }
+  .mobile-menu-btn {
+    display:flex; width:36px; height:36px; border-radius:var(--radius);
+    align-items:center; justify-content:center;
+    color:var(--gray-600); font-size:17px;
+  }
+  .mobile-menu-btn:hover { background:var(--gray-100); }
+  .hamburger { display:flex; }
+  .topbar-search input{ min-width: 160px; }
+  .cards-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+}
+
+/* ── ≥860px ── */
+@media (max-width:860px) {
+  .page-wrap { grid-template-columns: 1fr; }
+  .side-blue { display: none; }
+  .side-white { padding: 40px 24px; background: var(--gray-100); }
+  .form-box {
+    max-width: 440px; background: var(--white); border-radius: 12px;
+    padding: 36px 28px; box-shadow: 0 4px 20px rgba(0,60,100,0.10);
+  }
+}
+
+/* ── ≥768px ── */
+@media (max-width:768px) {
+  .sidebar-toggle { display: flex; }
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-overlay.open { display: block; }
+  .main-content { margin-left: 0; }
+  .stats-cards { grid-template-columns: repeat(2, 1fr); }
+  .content-wrapper { padding: 20px 16px 32px; }
+  .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .section-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .toolbar { width: 100%; flex-wrap: wrap; }
+  .search-box input { width: 100%; }
+  .form-card { max-width: 100%; }
+  .profile-card { max-width: 100%; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-actions { flex-direction: column; }
+  .header-inner { height: 64px; }
+  .logo-umi-text .lu2 { display: none; }
+  .logo-umi svg { height: 42px; }
+  .gesped-text span { display: none; }
+  .header-nav-wrap {
+    display: none; flex-direction: column; position: absolute;
+    top: 64px; left: 0; right: 0; background: white;
+    border-bottom: 3px solid var(--orange);
+    padding: 12px; box-shadow: var(--shadow-md); gap: 2px;
+  }
+  .header-nav-wrap.open { display: flex; }
+  nav { flex-direction: column; width: 100%; }
+  nav a { padding: 10px 14px; width: 100%; }
+  .btn-connexion { margin: 8px 0 0; justify-content: center; }
+  .mobile-btn { display: block; }
+  .hero { padding: 60px 20px 50px; }
+  .hero h1 { font-size: 26px; }
+  .stats-bar-inner { grid-template-columns: repeat(2,1fr); }
+  .features-grid { grid-template-columns: 1fr; }
+  .recent-grid   { grid-template-columns: 1fr; }
+  .access-grid   { grid-template-columns: 1fr; }
+  .footer-grid   { grid-template-columns: 1fr; gap: 28px; }
+}
+
+/* ── ≥600px ── */
+@media (max-width:600px) {
+  .stats-grid { grid-template-columns:1fr; }
+  .stats-cards { grid-template-columns:1fr; }
+  .card-header { flex-direction:column; align-items:flex-start; gap:10px; }
+  .topbar-user-name { display:none; }
+  .auth-card-body { padding:28px 20px 24px; }
+  .auth-title { font-size:22px; }
+  .topbar-search{ display:none; }
+  .cards-grid{ grid-template-columns:1fr; }
+}
+
+/* ── ≥480px ── */
+@media (max-width:480px) {
+  .stats-bar-inner { grid-template-columns: 1fr 1fr; }
+  .hero-actions { flex-direction: column; }
+  .topbar-inner { padding: 0 16px; }
+  .logo-left img { height: 42px; }
+  .gesped-text small { display: none; }
+  .form-box { padding: 28px 20px; }
+  .form-card { padding: 28px 20px; border-radius: 12px; }
+  .form-title { font-size: 24px; }
+  .form-title { font-size: 23px; }
+  .form-title { font-size: 20px; }
+}
