@@ -3,7 +3,6 @@ package ma.gesped.controllers;
 import java.io.IOException;
 import java.util.List;
 
-import Services.AmiService;
 import Services.DevoirService;
 import Services.HistoriqueService;
 import Services.ModuleService;
@@ -36,8 +35,6 @@ public class ProfesseurServlet extends HttpServlet {
     private final ModuleService moduleService = new ModuleService();
     private final TypeRessourceService typeRessourceService = new TypeRessourceService();
     private final NotificationService notificationService = new NotificationService();
-    private final HistoriqueService historiqueService = new HistoriqueService();
-    private final AmiService amiService = new AmiService();
     private final UtilisateurService utilisateurService = new UtilisateurService();
     private final SoumissionService soumissionService = new SoumissionService();
     private final DevoirService devoirService = new DevoirService();
@@ -84,9 +81,6 @@ public class ProfesseurServlet extends HttpServlet {
             case "/devoir/ajouter" -> showDevoirForm(req, resp);
             case "/devoir/voir" -> voirDevoir(req, resp);
             case "/devoir/supprimer" -> deleteDevoir(req, resp);
-            case "/amis" -> showAmis(req, resp);
-            case "/ami/ajouter" -> ajouterAmi(req, resp);
-            case "/ami/retirer" -> retirerAmi(req, resp);
             case "/notifications" -> showNotifications(req, resp);
             case "/notification/lire" -> markNotificationRead(req, resp);
             case "/notification/toutlire" -> markAllNotificationsRead(req, resp);
@@ -484,60 +478,4 @@ public class ProfesseurServlet extends HttpServlet {
         }
     }
 
-    private void showAmis(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        Utilisateur user = getCurrentUser(req);
-        String tab = req.getParameter("tab");
-        if (tab == null || tab.isEmpty()) tab = "amis";
-
-        req.setAttribute("activeMenu", "amis");
-        req.setAttribute("pageTitle", "Mes amis");
-        req.setAttribute("tab", tab);
-        req.setAttribute("amis", amiService.getAmis(req.getSession()));
-        req.setAttribute("suggestions", amiService.getSuggestions(user.getIdUtilisateur(), req.getSession()));
-        req.setAttribute("nbAmis", amiService.countAmis(req.getSession()));
-        req.setAttribute("nbSuggestions", amiService.getSuggestions(user.getIdUtilisateur(), req.getSession()).size());
-
-        String msgSuccess = (String) req.getSession().getAttribute(Constants.FLASH_SUCCESS);
-        String msgError = (String) req.getSession().getAttribute(Constants.FLASH_ERROR);
-        if (msgSuccess != null) {
-            req.setAttribute(Constants.FLASH_SUCCESS, msgSuccess);
-            req.getSession().removeAttribute(Constants.FLASH_SUCCESS);
-        }
-        if (msgError != null) {
-            req.setAttribute(Constants.FLASH_ERROR, msgError);
-            req.getSession().removeAttribute(Constants.FLASH_ERROR);
-        }
-
-        req.getRequestDispatcher(Constants.VIEW_PROF_AMIS).forward(req, resp);
-    }
-
-    private void ajouterAmi(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Utilisateur user = getCurrentUser(req);
-        try {
-            int id = Integer.parseInt(req.getParameter("id"));
-            if (id == user.getIdUtilisateur()) {
-                req.getSession().setAttribute(Constants.FLASH_ERROR, "Vous ne pouvez pas vous ajouter vous-m\u00eame.");
-            } else if (utilisateurService.findById(id) == null) {
-                req.getSession().setAttribute(Constants.FLASH_ERROR, "Professeur introuvable.");
-            } else {
-                amiService.ajouter(req.getSession(), id);
-                req.getSession().setAttribute(Constants.FLASH_SUCCESS, "Ami ajout\u00e9 avec succ\u00e8s.");
-            }
-        } catch (NumberFormatException e) {
-            req.getSession().setAttribute(Constants.FLASH_ERROR, "Identifiant invalide.");
-        }
-        resp.sendRedirect(req.getContextPath() + "/professeur/amis?tab=suggestions");
-    }
-
-    private void retirerAmi(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        try {
-            int id = Integer.parseInt(req.getParameter("id"));
-            amiService.retirer(req.getSession(), id);
-            req.getSession().setAttribute(Constants.FLASH_SUCCESS, "Ami retir\u00e9 de votre liste.");
-        } catch (NumberFormatException e) {
-            req.getSession().setAttribute(Constants.FLASH_ERROR, "Identifiant invalide.");
-        }
-        resp.sendRedirect(req.getContextPath() + "/professeur/amis?tab=amis");
-    }
 }

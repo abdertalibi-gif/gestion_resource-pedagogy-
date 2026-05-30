@@ -52,15 +52,7 @@
 
 <!-- ======== MENU PROFESSEUR ======== -->
 <c:if test="${role == 'PROFESSEUR'}">
-    <c:if test="${not empty nomComplet}">
-        <div class="sidebar-profile flex items-center gap-10">
-            <div class="sidebar-avatar">${nomComplet.substring(0,1)}</div>
-            <div>
-                <div class="sidebar-name">${nomComplet}</div>
-                <span class="sidebar-role-badge">Professeur</span>
-            </div>
-        </div>
-    </c:if>
+   
     <div class="sidebar-section">
         <div class="sidebar-section-label">Navigation</div>
         <a href="${pageContext.request.contextPath}/professeur/dashboard"
@@ -86,10 +78,6 @@
         <a href="${pageContext.request.contextPath}/professeur/soumissions"
            class="nav-item ${activeMenu == 'soumissions' ? 'active' : ''}">
             <i class="fas fa-tasks"></i> Soumissions
-        </a>
-        <a href="${pageContext.request.contextPath}/professeur/amis"
-           class="nav-item ${activeMenu == 'amis' ? 'active' : ''}">
-            <i class="fas fa-user-friends"></i> Amis
         </a>
     </div>
     <div class="sidebar-section">

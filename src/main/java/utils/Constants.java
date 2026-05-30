@@ -66,7 +66,6 @@ public final class Constants {
     public static final String VIEW_PROF_UPLOAD = "/WEB-INF/views/professeur/resource-upload.jsp";
     public static final String VIEW_PROF_EDIT_RESSOURCE = "/WEB-INF/views/professeur/ressource-edit.jsp";
     public static final String VIEW_PROF_STATS = "/WEB-INF/views/professeur/statistiques.jsp";
-    public static final String VIEW_PROF_AMIS = "/WEB-INF/views/professeur/amis.jsp";
     public static final String VIEW_PROF_SOUMISSIONS = "/WEB-INF/views/professeur/soumissions.jsp";
     public static final String VIEW_PROF_DEVOIRS = "/WEB-INF/views/professeur/devoirs-list.jsp";
     public static final String VIEW_PROF_DEVOIR_FORM = "/WEB-INF/views/professeur/devoir-form.jsp";

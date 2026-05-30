@@ -26,10 +26,7 @@
     <%@ include file="/WEB-INF/includes/sidebar.jsp" %>
 
     <div class="main-content">
-        <header class="topbar">
-            <div class="topbar-left"><button class="sidebar-toggle" id="sidebarToggle" aria-label="Menu"><i class="fas fa-bars"></i></button><span class="topbar-title">${pageTitle}</span></div>
-            <div class="topbar-right"><div class="user-avatar">${nomComplet != null ? nomComplet.substring(0,1).toUpperCase() : 'P'}</div><div class="user-info"><span class="user-name">${nomComplet}</span><span class="user-role">Professeur</span></div></div>
-        </header>
+        <%@ include file="/WEB-INF/includes/topbar.jsp" %>
 
         <div class="content-wrapper">
             <c:if test="${not empty msgSuccess}"><div class="alert alert-success"><i class="fas fa-check-circle"></i> ${msgSuccess}<button class="alert-close" onclick="this.parentElement.remove()">&times;</button></div></c:if>
@@ -58,9 +55,6 @@
                     </a>
                     <a href="${pageContext.request.contextPath}/professeur/ressources" class="btn btn-outline">
                         <i class="fas fa-list"></i> Voir mes ressources
-                    </a>
-                    <a href="${pageContext.request.contextPath}/professeur/amis" class="btn btn-outline">
-                        <i class="fas fa-user-friends"></i> Mes amis
                     </a>
                 </div>
             </div>

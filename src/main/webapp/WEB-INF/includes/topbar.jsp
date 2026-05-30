@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
@@ -22,7 +23,9 @@
         <!-- Profil -->
         <div class="topbar-profile">
             <div class="profile-avatar">
-                <i class="fas fa-user-circle"></i>
+                <c:set var="prenom" value="${fn:split(nomComplet, ' ')[0]}"/>
+                <c:set var="nom" value="${fn:split(nomComplet, ' ')[1]}"/>
+                ${fn:substring(prenom, 0, 1)}${fn:substring(nom, 0, 1)}
             </div>
             <span class="profile-name">${nomComplet}</span>
         </div>
