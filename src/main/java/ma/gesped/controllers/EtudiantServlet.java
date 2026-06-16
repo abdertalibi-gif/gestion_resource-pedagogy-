@@ -11,7 +11,6 @@ import Services.DevoirService;
 import Services.FavoriService;
 import Services.HistoriqueService;
 import Services.ModuleService;
-import Services.NotificationService;
 import Services.RessourceService;
 import Services.ServiceResult;
 import Services.SoumissionService;
@@ -39,7 +38,6 @@ public class EtudiantServlet extends HttpServlet {
     private final TypeRessourceService typeRessourceService = new TypeRessourceService();
     private final FavoriService favoriService = new FavoriService();
     private final HistoriqueService historiqueService = new HistoriqueService();
-    private final NotificationService notificationService = new NotificationService();
     private final SoumissionService soumissionService = new SoumissionService();
     private final DevoirService devoirService = new DevoirService();
 
@@ -86,9 +84,6 @@ public class EtudiantServlet extends HttpServlet {
             case "/mes-soumissions" -> showMesSoumissions(req, resp);
             case "/devoirs" -> showDevoirs(req, resp);
             case "/soumission/telecharger" -> downloadSoumission(req, resp);
-            case "/notifications" -> showNotifications(req, resp);
-            case "/notification/lire" -> markNotificationRead(req, resp);
-            case "/notification/toutlire" -> markAllNotificationsRead(req, resp);
             default -> resp.sendError(404);
         }
     }
@@ -120,7 +115,6 @@ public class EtudiantServlet extends HttpServlet {
         List<Ressource> recentes = ressourceService.findLast5();
         int nbFavoris = favoriService.countByEtudiant(user.getIdUtilisateur());
         int nbConsultations = historiqueService.countByEtudiant(user.getIdUtilisateur());
-        int nbNonLues = notificationService.countNonLues(user.getIdUtilisateur());
 
         // Modules de la filiere/semestre de l'etudiant
         if (user.getFiliere() != null && user.getSemestre() != null
@@ -137,7 +131,6 @@ public class EtudiantServlet extends HttpServlet {
         req.setAttribute("recentes", recentes);
         req.setAttribute("nbFavoris", nbFavoris);
         req.setAttribute("nbConsultations", nbConsultations);
-        req.setAttribute("nbNonLues", nbNonLues);
 
         req.getRequestDispatcher(Constants.VIEW_ETU_DASHBOARD).forward(req, resp);
     }
@@ -227,8 +220,7 @@ public class EtudiantServlet extends HttpServlet {
         historiqueService.ajouter(user.getIdUtilisateur(), r.getIdRessource(), "TELECHARGEMENT");
 
         // Envoyer le fichier
-        String realPath = req.getServletContext().getRealPath(r.getCheminFichier());
-        Path filePath = Paths.get(realPath);
+        Path filePath = utils.FileUploadUtil.resolveExternalPath(r.getCheminFichier());
         if (!Files.exists(filePath)) {
             resp.sendError(404, "Fichier introuvable sur le serveur");
             return;
@@ -378,7 +370,7 @@ public class EtudiantServlet extends HttpServlet {
                 s.setDevoir(dev);
             }
 
-            String realPath = req.getServletContext().getRealPath("/assets/uploads");
+            String realPath = utils.FileUploadUtil.getExternalUploadPath();
             ServiceResult<Soumission> result = soumissionService.soumettre(s, filePart, realPath);
 
             if (result.isSuccess()) {
@@ -424,8 +416,7 @@ public class EtudiantServlet extends HttpServlet {
             return;
         }
 
-        String realPath = req.getServletContext().getRealPath(s.getCheminFichier());
-        java.nio.file.Path filePath = java.nio.file.Paths.get(realPath);
+        java.nio.file.Path filePath = utils.FileUploadUtil.resolveExternalPath(s.getCheminFichier());
         if (!java.nio.file.Files.exists(filePath)) {
             resp.sendError(404, "Fichier introuvable sur le serveur");
             return;
@@ -442,26 +433,6 @@ public class EtudiantServlet extends HttpServlet {
             java.nio.file.Files.copy(filePath, out);
         }
     }
-
-    private void showNotifications(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        Utilisateur user = getCurrentUser(req);
-        req.setAttribute("notifications", notificationService.findByUtilisateur(user.getIdUtilisateur()));
-        req.getRequestDispatcher("/WEB-INF/views/etudiant/notifications.jsp").forward(req, resp);
-    }
-
-    private void markNotificationRead(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
-        Utilisateur user = getCurrentUser(req);
-        notificationService.markAsRead(id, user.getIdUtilisateur());
-        resp.sendRedirect(req.getContextPath() + "/etudiant/notifications");
-    }
-
-    private void markAllNotificationsRead(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
-        Utilisateur user = getCurrentUser(req);
-        notificationService.markAllAsRead(user.getIdUtilisateur());
-        resp.sendRedirect(req.getContextPath() + "/etudiant/notifications");
-    }
 }
+
+

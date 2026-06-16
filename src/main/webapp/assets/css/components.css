@@ -830,6 +830,128 @@
   color: rgba(255,255,255,0.25); max-width: 1140px; margin: 0 auto;
 }
 
+/* ── HISTORIQUE ACTION BADGE ── */
+.historique-action-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--blue-light);
+  color: var(--blue-dark);
+  border: 1px solid rgba(5,130,181,0.15);
+  white-space: nowrap;
+}
+
+/* ── RESOURCE-VIEW CARD (etudiant/ressource-view.jsp) ── */
+.resource-view-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.resource-view-header {
+  padding: 24px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  border-bottom: 1px solid var(--gray-200);
+}
+.resource-view-icon {
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 22px;
+}
+.resource-view-info { min-width: 0; flex: 1; }
+.resource-view-info h2 {
+  font-family: var(--font-display);
+  font-size: 20px; font-weight: 800;
+  color: var(--text-dark, var(--text));
+  margin-bottom: 6px;
+}
+.resource-view-info > p {
+  font-size: 13.5px; color: var(--gray-500);
+  margin-bottom: 12px; line-height: 1.6;
+}
+.resource-view-meta {
+  display: flex; flex-wrap: wrap; gap: 14px;
+  font-size: 12.5px; color: var(--gray-600);
+}
+.resource-view-meta span { display: inline-flex; align-items: center; gap: 5px; }
+.resource-view-meta i { font-size: 12px; color: var(--gray-400); }
+.resource-view-actions {
+  display: flex; gap: 10px; flex-shrink: 0;
+  flex-wrap: wrap;
+}
+.resource-preview { padding: 24px; }
+.preview-fallback {
+  text-align: center;
+  padding: 48px 20px;
+  background: var(--gray-50);
+  border: 2px dashed var(--gray-200);
+  border-radius: var(--radius);
+}
+.preview-fallback i { display: block; margin-bottom: 12px; }
+.preview-fallback p { font-size: 14px; color: var(--gray-500); margin-bottom: 16px; }
+
+/* ── RESOURCE-VIEW ACTION BUTTONS ── */
+.btn-download-action {
+  background: linear-gradient(135deg, var(--teal-dark, #1a5f7a), var(--teal-mid, #1e7090));
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 14px rgba(26,95,122,0.35);
+  padding: 10px 22px;
+  font-size: 14px;
+  transition: all .2s ease;
+}
+.btn-download-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(26,95,122,0.45);
+  color: #fff;
+}
+.btn-fav-active {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1.5px solid #fcd34d;
+  padding: 10px 20px;
+  font-size: 14px;
+  transition: all .2s ease;
+}
+.btn-fav-active:hover {
+  background: #fde68a;
+  color: #92400e;
+  border-color: #fbbf24;
+}
+.btn-fav-inactive {
+  background: var(--teal-light, #e8f4f8);
+  color: var(--teal-dark, #1a5f7a);
+  border: 1.5px solid var(--teal-mid, #1e7090);
+  padding: 10px 20px;
+  font-size: 14px;
+  transition: all .2s ease;
+}
+.btn-fav-inactive:hover {
+  background: var(--teal-dark, #1a5f7a);
+  color: #fff;
+  border-color: var(--teal-dark, #1a5f7a);
+  transform: translateY(-1px);
+}
+
+/* ── RESOURCE META TEXT (used in favoris, ressources-list) ── */
+.resource-meta-text {
+  font-size: 12.5px;
+  color: var(--gray-500);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 4px;
+}
+
 /* ── KEYFRAMES ── */
 @keyframes fadeUp {
   from { opacity:0; transform:translateY(20px); }
@@ -842,10 +964,6 @@
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
-}
-@keyframes notifPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.12); }
 }
 
 /* ── LOGO FSM ── */

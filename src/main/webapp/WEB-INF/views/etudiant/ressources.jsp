@@ -58,8 +58,12 @@
                                             <td>${r.module.nomModule}</td>
                                             <td>${r.professeur.nom}</td>
                                             <td>${r.tailleFormatee}</td>
-                                            <td><a href="${pageContext.request.contextPath}/etudiant/ressources/download?id=${r.id}" class="btn btn-sm btn-download"><i class="fas fa-download"></i></a></td>
-                                        </tr>
+<td>
+    <a href="${pageContext.request.contextPath}/etudiant/ressource/telecharger?id=${r.idRessource}"
+       class="btn-action btn-view" title="Télécharger">
+        <i class="fas fa-download"></i>
+    </a>
+</td>                                        </tr>
                                     </c:forEach>
                                 </tbody>
                             </table>
@@ -76,6 +80,8 @@
             </div>
         </div>
     </div>
-    <script>const s=document.getElementById('sidebarToggle'),b=document.getElementById('sidebar'),o=document.getElementById('sidebarOverlay');if(s)s.addEventListener('click',function(){b.classList.toggle('open');o.classList.toggle('open')});if(o)o.addEventListener('click',function(){b.classList.remove('open');o.classList.remove('open')});function filterTable(){const q=document.querySelector('.search-box input').value.toLowerCase();document.querySelectorAll('#ressourcesTable tbody tr').forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(q)?'':'none'})}</script>
+    <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/dashboard.js"></script>
+    <script>function filterTable(){const q=document.querySelector('.search-box input').value.toLowerCase();document.querySelectorAll('#ressourcesTable tbody tr').forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(q)?'':'none'})}</script>
 </body>
 </html>

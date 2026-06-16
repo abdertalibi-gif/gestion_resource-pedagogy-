@@ -171,7 +171,7 @@ public class ModuleDAO {
         return list;
     }
 
-    public int insert(Module m) {
+    public int insert(Module m) throws SQLException {
         try (Connection conn = DAOFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, m.getNomModule());
@@ -183,13 +183,11 @@ public class ModuleDAO {
             try (ResultSet keys = ps.getGeneratedKeys()) {
                 if (keys.next()) return keys.getInt(1);
             }
-        } catch (SQLException e) {
-            System.err.println("ModuleDAO.insert: " + e.getMessage());
         }
         return -1;
     }
 
-    public boolean update(Module m) {
+    public boolean update(Module m) throws SQLException {
         try (Connection conn = DAOFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(UPDATE)) {
             ps.setString(1, m.getNomModule());
@@ -199,10 +197,7 @@ public class ModuleDAO {
             ps.setInt(5, m.getFiliere().getIdFiliere());
             ps.setInt(6, m.getIdModule());
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("ModuleDAO.update: " + e.getMessage());
         }
-        return false;
     }
 
     public boolean delete(int id) {

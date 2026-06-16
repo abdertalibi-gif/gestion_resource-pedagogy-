@@ -55,12 +55,12 @@
                                 <c:if test="${not empty d.description}">
                                     <p class="text-muted">${d.description}</p>
                                 </c:if>
-                                <div class="card-meta">
+                                <div class="resource-card-meta" style="margin-top:10px;">
                                     <c:if test="${not empty d.dateLimite}">
-                                        <small><i class="fas fa-clock"></i> Limite : ${d.dateLimite.toLocalDate()} ${d.dateLimite.toLocalTime()}</small>
+                                        <span class="resource-size"><i class="fas fa-clock"></i> Limite : ${d.dateLimite.toLocalDate()} ${d.dateLimite.toLocalTime()}</span>
                                     </c:if>
                                 </div>
-                                <div class="card-actions">
+                                <div style="margin-top:12px;">
                                     <a href="${pageContext.request.contextPath}/etudiant/soumettre?idDevoir=${d.idDevoir}"
                                        class="btn btn-sm btn-primary">
                                         <i class="fas fa-upload"></i> Soumettre
@@ -73,5 +73,7 @@
             </c:choose>
         </div>
     </div>
+    <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/dashboard.js"></script>
 </body>
 </html>

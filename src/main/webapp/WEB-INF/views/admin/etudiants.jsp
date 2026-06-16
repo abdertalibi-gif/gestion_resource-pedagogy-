@@ -55,8 +55,26 @@
                     </div>
                     <div class="toolbar">
                         <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Rechercher un &eacute;tudiant..." oninput="filterTable()"></div>
-                        <button class="btn btn-sm btn-outline"><i class="fas fa-filter"></i> Filtrer</button>
+                        <button class="btn btn-sm btn-outline" onclick="toggleFilter()"><i class="fas fa-filter"></i> Filtrer</button>
                     </div>
+                </div>
+
+                <div class="filter-bar" id="filterBar" style="display:none">
+                    <form class="filter-form" onsubmit="return false">
+                        <select id="filterStatut" onchange="filterTable()" class="form-select">
+                            <option value="">Tous les statuts</option>
+                            <option value="ACCEPTE">Accept&eacute;</option>
+                            <option value="EN_ATTENTE">En attente</option>
+                            <option value="REFUSE">Refus&eacute;</option>
+                        </select>
+                        <select id="filterFiliere" onchange="filterTable()" class="form-select">
+                            <option value="">Toutes les fili&egrave;res</option>
+                            <c:forEach var="f" items="${filieres}">
+                                <option value="${f.nomFiliere}">${f.nomFiliere}</option>
+                            </c:forEach>
+                        </select>
+                        <button class="btn btn-sm btn-outline" onclick="resetFilters()" type="button"><i class="fas fa-undo"></i> R&eacute;initialiser</button>
+                    </form>
                 </div>
 
                 <c:choose>
@@ -135,10 +153,28 @@
             sidebar.classList.remove('open');
             overlay.classList.remove('open');
         });
+        function toggleFilter() {
+            var bar = document.getElementById('filterBar');
+            bar.style.display = bar.style.display === 'none' ? 'block' : 'none';
+        }
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('filterStatut').value = '';
+            var f = document.getElementById('filterFiliere');
+            if (f) f.value = '';
+            filterTable();
+        }
         function filterTable() {
             var q = document.getElementById('searchInput').value.toLowerCase();
+            var s = document.getElementById('filterStatut').value;
+            var fi = document.getElementById('filterFiliere');
+            var fil = fi ? fi.value : '';
             document.querySelectorAll('#studentsTable tbody tr').forEach(function(r) {
-                r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
+                var text = r.textContent.toLowerCase();
+                var match = text.includes(q);
+                if (s && !r.querySelector('.status-badge').textContent.trim().startsWith(s === 'ACCEPTE' ? 'Accept' : s === 'EN_ATTENTE' ? 'En' : 'Refus')) match = false;
+                if (fil && text.indexOf(fil.toLowerCase()) === -1) match = false;
+                r.style.display = match ? '' : 'none';
             });
         }
     </script>

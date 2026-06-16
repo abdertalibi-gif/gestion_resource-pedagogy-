@@ -29,7 +29,7 @@
                 </div>
             </c:if>
             <c:if test="${not empty msgError}">
-                <div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> ${msgError}
+                <div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> ${msgError}
                     <button class="alert-close" onclick="this.parentElement.remove()">&times;</button>
                 </div>
             </c:if>
@@ -101,5 +101,7 @@
             </c:choose>
         </div>
     </div>
+    <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/dashboard.js"></script>
 </body>
 </html>

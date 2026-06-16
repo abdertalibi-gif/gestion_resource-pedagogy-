@@ -1,28 +1,16 @@
 package dao;
 
 import models.ResetToken;
+import utils.DatabaseConnection;
 import java.sql.*;
 import java.time.LocalDateTime;
 
 public class ResetTokenDAO {
 
-    private final String jdbcURL;
-    private final String jdbcUsername;
-    private final String jdbcPassword;
-
-    public ResetTokenDAO(String jdbcURL, String jdbcUsername, String jdbcPassword) {
-        this.jdbcURL = jdbcURL;
-        this.jdbcUsername = jdbcUsername;
-        this.jdbcPassword = jdbcPassword;
-    }
+    public ResetTokenDAO() {}
 
     private Connection getConnection() throws SQLException {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new SQLException("Driver MySQL non trouvé", e);
-        }
-        return DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
+        return DatabaseConnection.getConnection();
     }
 
     /**

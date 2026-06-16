@@ -3,7 +3,7 @@ package models;
 import java.io.Serializable;
 
 public class Module implements Serializable {
-    private static final long serialVersionUID = 1L;
+  
 
     private int idModule;
     private String nomModule;

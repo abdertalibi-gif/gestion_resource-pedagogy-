@@ -39,7 +39,6 @@
                 <span class="sep"><i class="fas fa-chevron-right"></i></span>
                 <span class="current">Ajouter</span>
             </div>
-
             <!-- ★ Banner bienvenue ★ -->
             <div class="welcome-banner">
                 <div class="welcome-text">
@@ -48,19 +47,15 @@
                 </div>
                 <i class="fas fa-user-plus welcome-icon"></i>
             </div>
-
             <div class="form-card">
                     <a href="${pageContext.request.contextPath}/admin/etudiants" class="btn btn-sm btn-secondary">
                         <i class="fas fa-arrow-left"></i> Retour
                     </a>
                 </div>
-                <div class="form-card-body">
-                    <p class="text-muted">Formulaire d'ajout d'étudiant — à compléter avec les champs nécessaires.</p>
-                </div>
+        
             </div>
         </div>
     </div>
-
     <script>
         var sidebarToggle=document.getElementById('sidebarToggle'),
             sidebar=document.getElementById('sidebar'),

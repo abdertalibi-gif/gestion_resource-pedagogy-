@@ -179,8 +179,6 @@
         <div class="divider">ou</div>
 
         <div class="form-links">
-          <a href="${pageContext.request.contextPath}/register"><i class="fas fa-user-plus"></i> Créer un compte</a>
-          <span class="dot">·</span>
           <a href="${pageContext.request.contextPath}/forgot-password"><i class="fas fa-key"></i> Mot de passe oublié ?</a>
           <span class="dot">·</span>
           <a href="${pageContext.request.contextPath}/"><i class="fas fa-home"></i> Accueil</a>

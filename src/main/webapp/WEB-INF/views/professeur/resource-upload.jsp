@@ -110,16 +110,17 @@
                         <!-- Type -->
                         <div class="form-group">
                             <label for="typeId">Type <span class="required">*</span></label>
-                            <select id="typeId" name="typeId" class="form-select">
-                                <option value="">-- S&eacute;lectionner un type --</option>
-                                <option value="1" ${param.typeId == '1' ? 'selected' : ''}>PDF</option>
-                                <option value="2" ${param.typeId == '2' ? 'selected' : ''}>Word</option>
-                                <option value="3" ${param.typeId == '3' ? 'selected' : ''}>PowerPoint</option>
-                                <option value="4" ${param.typeId == '4' ? 'selected' : ''}>Excel</option>
-                                <option value="5" ${param.typeId == '5' ? 'selected' : ''}>Vid&eacute;o</option>
-                                <option value="6" ${param.typeId == '6' ? 'selected' : ''}>ZIP</option>
-                                <option value="7" ${param.typeId == '7' ? 'selected' : ''}>Image</option>
-                            </select>
+                 <select id="typeId" name="typeId" class="form-select">
+    <option value="">-- Sélectionner un type --</option>
+
+    <option value="1">PDF</option>
+    <option value="20">Excel</option>
+    <option value="5">PowerPoint</option>
+    <option value="2">Vidéo</option>
+    <option value="19">ZIP</option>
+    <option value="3">TD</option>
+    <option value="4">TP</option>
+</select>
                             <div class="field-error" id="typeError">Veuillez s&eacute;lectionner un type.</div>
                         </div>
 

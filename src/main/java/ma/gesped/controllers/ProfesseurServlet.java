@@ -6,7 +6,6 @@ import java.util.List;
 import Services.DevoirService;
 import Services.HistoriqueService;
 import Services.ModuleService;
-import Services.NotificationService;
 import Services.RessourceService;
 import Services.ServiceResult;
 import Services.SoumissionService;
@@ -34,7 +33,6 @@ public class ProfesseurServlet extends HttpServlet {
     private final RessourceService ressourceService = new RessourceService();
     private final ModuleService moduleService = new ModuleService();
     private final TypeRessourceService typeRessourceService = new TypeRessourceService();
-    private final NotificationService notificationService = new NotificationService();
     private final UtilisateurService utilisateurService = new UtilisateurService();
     private final SoumissionService soumissionService = new SoumissionService();
     private final DevoirService devoirService = new DevoirService();
@@ -81,9 +79,6 @@ public class ProfesseurServlet extends HttpServlet {
             case "/devoir/ajouter" -> showDevoirForm(req, resp);
             case "/devoir/voir" -> voirDevoir(req, resp);
             case "/devoir/supprimer" -> deleteDevoir(req, resp);
-            case "/notifications" -> showNotifications(req, resp);
-            case "/notification/lire" -> markNotificationRead(req, resp);
-            case "/notification/toutlire" -> markAllNotificationsRead(req, resp);
             default -> resp.sendError(404);
         }
     }
@@ -111,12 +106,10 @@ public class ProfesseurServlet extends HttpServlet {
         int nbRessources = ressourceService.countByProfesseur(user.getIdUtilisateur());
         List<Ressource> dernieresRessources = ressourceService.findByProfesseur(user.getIdUtilisateur())
                 .stream().limit(5).toList();
-        int nbNonLues = notificationService.countNonLues(user.getIdUtilisateur());
 
         req.setAttribute("modules", modules);
         req.setAttribute("nbRessources", nbRessources);
         req.setAttribute("dernieresRessources", dernieresRessources);
-        req.setAttribute("nbNonLues", nbNonLues);
 
         req.getRequestDispatcher(Constants.VIEW_PROF_DASHBOARD).forward(req, resp);
     }
@@ -204,7 +197,7 @@ public class ProfesseurServlet extends HttpServlet {
             type.setIdType(Integer.parseInt(typeParam));
             r.setType(type);
 
-            String realPath = req.getServletContext().getRealPath("/assets/uploads");
+            String realPath = utils.FileUploadUtil.getExternalUploadPath();
             ServiceResult<Ressource> result = ressourceService.upload(r, filePart, realPath);
 
             if (result.isSuccess()) {
@@ -282,28 +275,6 @@ public class ProfesseurServlet extends HttpServlet {
         req.setAttribute("nbRessources", nbRessources);
         req.setAttribute("modules", modules);
         req.getRequestDispatcher(Constants.VIEW_PROF_STATS).forward(req, resp);
-    }
-
-    private void showNotifications(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        Utilisateur user = getCurrentUser(req);
-        req.setAttribute("notifications", notificationService.findByUtilisateur(user.getIdUtilisateur()));
-        req.getRequestDispatcher("/WEB-INF/views/professeur/notifications.jsp").forward(req, resp);
-    }
-
-    private void markNotificationRead(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
-        Utilisateur user = getCurrentUser(req);
-        notificationService.markAsRead(id, user.getIdUtilisateur());
-        resp.sendRedirect(req.getContextPath() + "/professeur/notifications");
-    }
-
-    private void markAllNotificationsRead(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
-        Utilisateur user = getCurrentUser(req);
-        notificationService.markAllAsRead(user.getIdUtilisateur());
-        resp.sendRedirect(req.getContextPath() + "/professeur/notifications");
     }
 
     private void showSoumissions(HttpServletRequest req, HttpServletResponse resp)
@@ -425,7 +396,7 @@ public class ProfesseurServlet extends HttpServlet {
             mod.setIdModule(Integer.parseInt(req.getParameter("idModule")));
             d.setModule(mod);
 
-            String realPath = req.getServletContext().getRealPath("/assets/uploads");
+            String realPath = utils.FileUploadUtil.getExternalUploadPath();
             ServiceResult<Devoir> result = devoirService.creer(d, filePart, realPath);
 
             if (result.isSuccess()) {
@@ -459,8 +430,7 @@ public class ProfesseurServlet extends HttpServlet {
             return;
         }
 
-        String realPath = req.getServletContext().getRealPath(s.getCheminFichier());
-        java.nio.file.Path filePath = java.nio.file.Paths.get(realPath);
+        java.nio.file.Path filePath = utils.FileUploadUtil.resolveExternalPath(s.getCheminFichier());
         if (!java.nio.file.Files.exists(filePath)) {
             resp.sendError(404, "Fichier introuvable sur le serveur");
             return;

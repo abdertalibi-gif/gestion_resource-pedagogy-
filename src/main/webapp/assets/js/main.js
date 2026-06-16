@@ -21,25 +21,6 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Notification dropdown toggle
-function toggleNotif() {
-    const menu = document.getElementById('notifMenu');
-    if (menu) {
-        menu.classList.toggle('show');
-    }
-}
-
-// Fermer notification dropdown au clic en dehors
-document.addEventListener('click', function(e) {
-    const dropdown = document.getElementById('notifDropdown');
-    const menu = document.getElementById('notifMenu');
-    if (dropdown && menu && menu.classList.contains('show')) {
-        if (!dropdown.contains(e.target)) {
-            menu.classList.remove('show');
-        }
-    }
-});
-
 // Auto-hide des alertes apres 5 secondes
 document.addEventListener('DOMContentLoaded', function() {
     const alerts = document.querySelectorAll('.alert');

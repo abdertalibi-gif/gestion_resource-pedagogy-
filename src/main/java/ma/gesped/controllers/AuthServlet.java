@@ -42,17 +42,11 @@ public class AuthServlet extends HttpServlet {
             HttpSession session = req.getSession(true);
             session.setAttribute(Constants.SESSION_USER, user);
             session.setAttribute(Constants.SESSION_ROLE, user.getRole().getNomRole());
-
             session.setAttribute(Constants.FLASH_SUCCESS,
                 "Bienvenue, " + user.getNomComplet() + " !");
-
             redirectByRole(req, user, resp);
-        } else if (result.isEnAttente()) {
-            req.setAttribute("error", "Votre compte est en attente de validation par l'administrateur.");
-            req.setAttribute("email", email);
-            req.getRequestDispatcher(Constants.VIEW_LOGIN).forward(req, resp);
-        } else if (result.isRefuse()) {
-            req.setAttribute("error", "Votre demande d'inscription a été refusée. Veuillez contacter l'administrateur.");
+        } else if (result.isInactif()) {
+            req.setAttribute("error", "Votre compte est désactivé. Veuillez contacter l'administrateur.");
             req.setAttribute("email", email);
             req.getRequestDispatcher(Constants.VIEW_LOGIN).forward(req, resp);
         } else {

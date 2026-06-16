@@ -6,13 +6,13 @@ import java.util.List;
 import Services.AffectationService;
 import Services.FiliereService;
 import Services.ModuleService;
-import Services.NotificationService;
 import Services.RessourceService;
 import Services.SemestreService;
 import Services.ServiceResult;
 import Services.TypeRessourceService;
 import Services.UtilisateurService;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +20,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import models.AffectationModule;
 import models.Filiere;
 import models.Module;
-import models.Notification;
 import models.Ressource;
 import models.Role;
 import models.Semestre;
@@ -28,6 +27,7 @@ import models.Utilisateur;
 import utils.Constants;
 
 @WebServlet("/admin/*")
+@MultipartConfig(maxFileSize = 52428800, maxRequestSize = 52428800)
 public class AdminServlet extends HttpServlet {
 
     private final UtilisateurService utilisateurService = new UtilisateurService();
@@ -37,7 +37,6 @@ public class AdminServlet extends HttpServlet {
     private final SemestreService semestreService = new SemestreService();
     private final AffectationService affectationService = new AffectationService();
     private final TypeRessourceService typeRessourceService = new TypeRessourceService();
-    private final NotificationService notificationService = new NotificationService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -58,9 +57,7 @@ public class AdminServlet extends HttpServlet {
             case "/utilisateur/modifier" -> showUtilisateurForm(req, resp, req.getParameter("id"));
             case "/utilisateur/supprimer" -> deleteUtilisateur(req, resp);
             case "/utilisateur/toggle" -> toggleUtilisateur(req, resp);
-            case "/utilisateur/accepter" -> accepterUtilisateur(req, resp);
-            case "/utilisateur/refuser" -> refuserUtilisateur(req, resp);
-            case "/demandes" -> showDemandes(req, resp);
+            case "/import" -> showImportReq(req, resp);
             case "/modules" -> showModules(req, resp);
             case "/module/ajouter" -> showModuleForm(req, resp, null);
             case "/module/modifier" -> showModuleForm(req, resp, req.getParameter("id"));
@@ -100,6 +97,7 @@ public class AdminServlet extends HttpServlet {
             case "/semestre/ajouter" -> createSemestre(req, resp);
             case "/semestre/modifier" -> updateSemestre(req, resp);
             case "/affectation/ajouter" -> createAffectation(req, resp);
+            case "/import" -> importExcel(req, resp);
             default -> resp.sendError(404);
         }
     }
@@ -111,6 +109,7 @@ public class AdminServlet extends HttpServlet {
             throws ServletException, IOException {
         Utilisateur admin = (Utilisateur) req.getSession().getAttribute(Constants.SESSION_USER);
         req.setAttribute("etudiants", utilisateurService.findByRole(Constants.ROLE_ETUDIANT));
+        req.setAttribute("filieres", filiereService.findAll());
         req.setAttribute("pageTitle", "Étudiants");
         req.setAttribute("activeMenu", "etudiants");
         req.setAttribute("nomComplet", admin != null ? admin.getNomComplet() : "Admin");
@@ -123,6 +122,7 @@ public class AdminServlet extends HttpServlet {
             throws ServletException, IOException {
         Utilisateur admin = (Utilisateur) req.getSession().getAttribute(Constants.SESSION_USER);
         req.setAttribute("professeurs", utilisateurService.findByRole(Constants.ROLE_PROFESSEUR));
+        req.setAttribute("filieres", filiereService.findAll());
         req.setAttribute("pageTitle", "Professeurs");
         req.setAttribute("activeMenu", "professeurs");
         req.setAttribute("nomComplet", admin != null ? admin.getNomComplet() : "Admin");
@@ -296,54 +296,39 @@ public class AdminServlet extends HttpServlet {
         resp.sendRedirect(req.getContextPath() + "/admin/utilisateurs");
     }
 
-    private void accepterUtilisateur(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
-        utilisateurService.updateStatut(id, Constants.STATUT_ACCEPTE);
-
-        // Creer une notification pour l'utilisateur
-        Utilisateur u = utilisateurService.findById(id);
-        if (u != null) {
-            Notification notif = new Notification();
-            notif.setTitre("Compte accepté");
-            notif.setMessage("Votre demande d'inscription a été acceptée. Vous pouvez maintenant vous connecter.");
-            notif.setUtilisateur(u);
-            boolean b = notificationService.create(notif);        }
-
-        req.getSession().setAttribute("msgSuccess", "Compte accepté avec succès");
-        resp.sendRedirect(req.getContextPath() + "/admin/demandes");
-    }
-
-    private void refuserUtilisateur(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
-        utilisateurService.updateStatut(id, Constants.STATUT_REFUSE);
-
-        // Creer une notification pour l'utilisateur
-        Utilisateur u = utilisateurService.findById(id);
-        if (u != null) {
-            Notification notif = new Notification();
-            notif.setTitre("Compte refusé");
-            notif.setMessage("Votre demande d'inscription a été refusée. Veuillez contacter l'administrateur.");
-            notif.setUtilisateur(u);
-            boolean b = notificationService.create(notif);
-        }
-
-        req.getSession().setAttribute("msgSuccess", "Compte refusé");
-        resp.sendRedirect(req.getContextPath() + "/admin/demandes");
-    }
-
-    private void showDemandes(HttpServletRequest req, HttpServletResponse resp)
+    // ========================================================
+    // IMPORT EXCEL
+    // ========================================================
+    private void showImportReq(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         Utilisateur admin = (Utilisateur) req.getSession().getAttribute(Constants.SESSION_USER);
-        List<Utilisateur> demandes = utilisateurService.findByStatut(Constants.STATUT_EN_ATTENTE);
-        req.setAttribute("demandes", demandes);
-        req.setAttribute("pageTitle", "Demandes d'inscription");
-        req.setAttribute("activeMenu", "demandes");
+        req.setAttribute("pageTitle", "Import Excel");
+        req.setAttribute("activeMenu", "import");
         req.setAttribute("nomComplet", admin != null ? admin.getNomComplet() : "Admin");
         req.setAttribute("role", Constants.ROLE_ADMIN);
         forwardFlashMessages(req);
-        req.getRequestDispatcher(Constants.VIEW_ADMIN_DEMANDES).forward(req, resp);
+        req.getRequestDispatcher(Constants.VIEW_ADMIN_IMPORT).forward(req, resp);
+    }
+
+    private void importExcel(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        var part = req.getPart("fichierExcel");
+        String typeImport = req.getParameter("typeImport");
+        if (typeImport == null || typeImport.isEmpty()) typeImport = Constants.ROLE_ETUDIANT;
+
+        if (part == null || part.getSize() == 0) {
+            req.getSession().setAttribute("msgError", "Veuillez selectionner un fichier Excel");
+            resp.sendRedirect(req.getContextPath() + "/admin/import");
+            return;
+        }
+        ServiceResult<String> result = utilisateurService.importFromExcel(part.getInputStream(), typeImport);
+        if (result.isSuccess()) {
+            req.getSession().setAttribute("msgSuccess", result.getMessage());
+        } else {
+            req.getSession().setAttribute("msgError", "Rapport d'importation :");
+            req.getSession().setAttribute("errors", result.getErrors());
+        }
+        resp.sendRedirect(req.getContextPath() + "/admin/import");
     }
 
     private Utilisateur extractUtilisateur(HttpServletRequest req) {
@@ -635,7 +620,7 @@ public class AdminServlet extends HttpServlet {
     private void deleteRessource(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
-        String realPath = req.getServletContext().getRealPath("/assets/uploads");
+        String realPath = utils.FileUploadUtil.getExternalUploadPath();
         ressourceService.delete(id, realPath);
         req.getSession().setAttribute("msgSuccess", "Ressource supprimee avec succes");
         resp.sendRedirect(req.getContextPath() + "/admin/ressources");

@@ -1,10 +1,15 @@
 package Services;
 
 import dao.DAOFactory;
+import dao.ResetTokenDAO;
 import dao.UtilisateurDAO;
+import models.ResetToken;
 import models.Utilisateur;
 import utils.Constants;
 import utils.PasswordUtil;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class AuthService {
 
@@ -17,7 +22,6 @@ public class AuthService {
     /**
      * Authentifie un utilisateur par email et mot de passe.
      * Retourne l'utilisateur si succes, null sinon.
-     * Pour les erreurs specifiques, utiliser authenticateWithStatus().
      */
     public Utilisateur authenticate(String email, String password) {
         AuthResult result = authenticateWithStatus(email, password);
@@ -25,12 +29,10 @@ public class AuthService {
     }
 
     /**
-     * Authentifie et retourne un AuthResult contenant l'utilisateur et son statut.
-     * Les codes de retour possibles :
+     * Authentifie et retourne un AuthResult avec statut.
      * - "OK" : authentification reussie
+     * - "INACTIF" : compte désactivé
      * - "INVALID" : email ou mot de passe incorrect
-     * - "EN_ATTENTE" : compte en attente de validation
-     * - "REFUSE" : compte refuse
      */
     public AuthResult authenticateWithStatus(String email, String password) {
         if (email == null || email.trim().isEmpty() ||
@@ -41,24 +43,19 @@ public class AuthService {
         Utilisateur user = utilisateurDAO.findByEmail(email.trim());
         if (user == null) return new AuthResult(null, "INVALID");
 
-        // Verifier le mot de passe
         boolean passwordOk = PasswordUtil.verify(password, user.getMotDePasse())
                           || password.equals(user.getMotDePasse());
         if (!passwordOk) return new AuthResult(null, "INVALID");
 
-        // Verifier le statut du compte
-        if (Constants.STATUT_EN_ATTENTE.equals(user.getStatut())) {
-            return new AuthResult(user, "EN_ATTENTE");
-        }
-        if (Constants.STATUT_REFUSE.equals(user.getStatut())) {
-            return new AuthResult(user, "REFUSE");
+        if (!Constants.STATUT_ACCEPTE.equals(user.getStatut())) {
+            return new AuthResult(user, "INACTIF");
         }
 
         return new AuthResult(user, "OK");
     }
 
     /**
-     * Resultat d'authentification contenant l'utilisateur et un code de statut.
+     * Resultat d'authentification.
      */
     public static class AuthResult {
         private final Utilisateur user;
@@ -72,8 +69,7 @@ public class AuthService {
         public Utilisateur getUser() { return user; }
         public String getStatus() { return status; }
         public boolean isSuccess() { return "OK".equals(status); }
-        public boolean isEnAttente() { return "EN_ATTENTE".equals(status); }
-        public boolean isRefuse() { return "REFUSE".equals(status); }
+        public boolean isInactif() { return "INACTIF".equals(status); }
     }
 
     /**
@@ -103,8 +99,46 @@ public class AuthService {
         return utilisateurDAO.updatePassword(user.getIdUtilisateur(), hashed);
     }
 
-	public void sendResetToken(String email) {
-		// TODO Auto-generated method stub
-		
+	public boolean sendResetToken(String email) {
+		Utilisateur user = utilisateurDAO.findByEmail(email);
+		if (user == null) {
+			return false;
+		}
+
+		String tokenValue = UUID.randomUUID().toString().replace("-", "");
+		LocalDateTime expiration = LocalDateTime.now().plusMinutes(15);
+		ResetToken resetToken = new ResetToken(user.getIdUtilisateur(), tokenValue, expiration);
+
+		ResetTokenDAO tokenDAO = DAOFactory.getResetTokenDAO();
+		try {
+			tokenDAO.save(resetToken);
+		} catch (Exception e) {
+			System.err.println("AuthService.sendResetToken: " + e.getMessage());
+			return false;
+		}
+
+		String lien = Constants.APP_URL + "/reset-password?token=" + tokenValue;
+		EmailService emailService = new EmailService();
+		emailService.envoyerResetPassword(email, lien);
+
+		return true;
+	}
+
+	/**
+	 * Vérifie l'identité d'un utilisateur à partir de son email, nom, prénom et CNE.
+	 * Le CNE est obligatoire si l'utilisateur en possède un en base, ignoré sinon.
+	 * Retourne l'utilisateur si vérifié, null sinon.
+	 */
+	public Utilisateur verifyIdentity(String email, String nom, String prenom, String cne) {
+		if (email == null || nom == null || prenom == null) return null;
+		Utilisateur user = utilisateurDAO.findByEmail(email.trim());
+		if (user == null) return null;
+		if (!user.getNom().equalsIgnoreCase(nom.trim())) return null;
+		if (!user.getPrenom().equalsIgnoreCase(prenom.trim())) return null;
+		String cneUser = user.getCne();
+		if (cneUser != null && !cneUser.isEmpty()) {
+			if (cne == null || !cneUser.equalsIgnoreCase(cne.trim())) return null;
+		}
+		return user;
 	}
 }

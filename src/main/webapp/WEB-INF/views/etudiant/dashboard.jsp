@@ -22,6 +22,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Raleway:wght@700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/dashboard.css?v=1">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css?v=1">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/components.css?v=1">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/responsive.css?v=1">
@@ -60,28 +61,28 @@
 
             <!-- Stats -->
             <div class="stats-cards">
-                <div class="stat-card-dashboard gradient-blue">
+                <div class="stat-card-dashboard grad-deep">
                     <div class="stat-card-icon"><i class="fas fa-book"></i></div>
                     <div class="stat-card-info">
                         <span class="stat-card-number ${modules.size() == 0 ? 'zero' : ''}">${modules.size()}</span>
                         <span class="stat-card-label">Mes modules</span>
                     </div>
                 </div>
-                <div class="stat-card-dashboard gradient-green">
+                <div class="stat-card-dashboard grad-teal">
                     <div class="stat-card-icon"><i class="fas fa-file-alt"></i></div>
                     <div class="stat-card-info">
                         <span class="stat-card-number ${recentes.size() == 0 ? 'zero' : ''}">${recentes.size()}</span>
                         <span class="stat-card-label">Ressources r&eacute;centes</span>
                     </div>
                 </div>
-                <div class="stat-card-dashboard gradient-orange">
+                <div class="stat-card-dashboard grad-orange">
                     <div class="stat-card-icon"><i class="fas fa-star"></i></div>
                     <div class="stat-card-info">
                         <span class="stat-card-number ${nbFavoris == 0 ? 'zero' : ''}">${nbFavoris}</span>
                         <span class="stat-card-label">Favoris</span>
                     </div>
                 </div>
-                <div class="stat-card-dashboard gradient-purple">
+                <div class="stat-card-dashboard grad-mid">
                     <div class="stat-card-icon"><i class="fas fa-history"></i></div>
                     <div class="stat-card-info">
                         <span class="stat-card-number ${nbConsultations == 0 ? 'zero' : ''}">${nbConsultations}</span>

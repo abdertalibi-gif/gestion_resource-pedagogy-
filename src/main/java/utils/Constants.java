@@ -28,19 +28,40 @@ public final class Constants {
     // ==================== UPLOAD ====================
     public static final long MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 Mo
     public static final String UPLOAD_DIR = "/assets/uploads/";
+    public static final String UPLOAD_DIR_EXTERNAL = "C:/xampp/tomcat/webapps/LINALINA_UPLOADS";
     public static final String[] ALLOWED_TYPES = {
-        "application/pdf",
-        "video/mp4", "video/webm",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-        "application/zip", "application/x-zip-compressed",
-        "image/png", "image/jpeg", "image/jpg"
-    };
+    	    "application/pdf",
+
+    	    // Vidéos
+    	    "video/mp4",
+    	    "video/webm",
+
+    	    // Word
+    	    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+
+    	    // Excel
+    	    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+
+    	    // PowerPoint
+    	    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+
+    	    // ZIP
+    	    "application/zip",
+    	    "application/x-zip-compressed",
+
+    	    // Images
+    	    "image/png",
+    	    "image/jpeg",
+    	    "image/jpg"
+    	};
 
     // ==================== VUES PUBLIQUES ====================
     public static final String VIEW_LOGIN = "/login.jsp";
     public static final String VIEW_FORGOT = "/WEB-INF/views/auth/forgot-password.jsp";
     public static final String VIEW_HOME = "/index.jsp";
+
+    // ==================== URL APPLICATION ====================
+    public static final String APP_URL = "http://localhost:8080/GestionRessourcesPedagogiques";
 
     // ==================== VUES ADMIN ====================
     public static final String VIEW_ADMIN_DASHBOARD = "/WEB-INF/views/admin/dashboard.jsp";
@@ -84,12 +105,9 @@ public final class Constants {
     public static final String VIEW_ETU_MES_SOUMISSIONS = "/WEB-INF/views/etudiant/mes-soumissions.jsp";
     public static final String VIEW_ETU_DEVOIRS = "/WEB-INF/views/etudiant/mes-devoirs.jsp";
 
-    // ==================== VUES PUBLIQUES (suite) ====================
-    public static final String VIEW_REGISTER = "/WEB-INF/views/auth/register.jsp";
-
-    // ==================== VUES ADMIN (demandes inscription) ====================
-    public static final String VIEW_ADMIN_DEMANDES = "/WEB-INF/views/admin/demandes.jsp";
+    // ==================== VUES ADMIN (suite) ====================
     public static final String VIEW_ADMIN_FILIERE_VOIR = "/WEB-INF/views/admin/filiere-voir.jsp";
+    public static final String VIEW_ADMIN_IMPORT = "/WEB-INF/views/admin/import.jsp";
 
     // ==================== VUES ERREURS ====================
     public static final String VIEW_403 = "/WEB-INF/views/error/403.jsp";

@@ -36,13 +36,13 @@
             <form method="get" action="${pageContext.request.contextPath}/etudiant/recherche" class="filter-bar" style="margin-bottom:24px;">
                 <div style="display:flex;gap:10px;flex:1;max-width:500px;">
                     <input type="text" name="q" value="${keyword}" placeholder="Rechercher par titre, module, description..."
-                           class="form-control" style="flex:1;padding:10px 14px;border:2px solid var(--border-color);border-radius:var(--radius-md);font-size:14px;">
+                           class="form-input">
                     <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Rechercher</button>
                 </div>
             </form>
 
             <c:if test="${not empty keyword}">
-                <p style="margin-bottom:20px;color:var(--text-secondary);font-size:14px;">
+                <p style="margin-bottom:20px;font-size:14px;">
                     <strong>${resultats.size()}</strong> resultat(s) pour "<strong>${keyword}</strong>"
                 </p>
             </c:if>

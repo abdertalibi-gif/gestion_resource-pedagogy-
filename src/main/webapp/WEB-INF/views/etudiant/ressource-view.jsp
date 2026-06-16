@@ -12,6 +12,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Raleway:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css?v=1">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/components.css?v=1">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/responsive.css?v=1">
@@ -55,19 +59,19 @@
                     </div>
                     <div class="resource-view-actions">
                         <a href="${pageContext.request.contextPath}/etudiant/ressource/telecharger?id=${ressource.idRessource}"
-                           class="btn btn-primary">
-                            <i class="fas fa-download"></i> Telecharger
+                           class="btn btn-primary btn-download-action">
+                            <i class="fas fa-download"></i> Télécharger
                         </a>
                         <c:choose>
                             <c:when test="${ressource.estFavori}">
                                 <a href="${pageContext.request.contextPath}/etudiant/favori/retirer?id=${ressource.idRessource}"
-                                   class="btn btn-warning">
-                                    <i class="fas fa-star"></i> Retirer des favoris
+                                   class="btn btn-fav-active">
+                                    <i class="fas fa-star"></i> Dans les favoris
                                 </a>
                             </c:when>
                             <c:otherwise>
                                 <a href="${pageContext.request.contextPath}/etudiant/favori/ajouter?id=${ressource.idRessource}"
-                                   class="btn btn-outline">
+                                   class="btn btn-fav-inactive">
                                     <i class="far fa-star"></i> Ajouter aux favoris
                                 </a>
                             </c:otherwise>
@@ -106,5 +110,6 @@
     </div>
 
     <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/dashboard.js"></script>
 </body>
 </html>

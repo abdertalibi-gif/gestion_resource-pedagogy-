@@ -143,11 +143,6 @@ input, select, textarea { font-family:inherit; }
   position:relative;
 }
 .topbar-icon-btn:hover { background:var(--blue-light); color:var(--blue); }
-.notif-dot {
-  position:absolute; top:6px; right:6px;
-  width:7px; height:7px; border-radius:50%;
-  background:var(--orange); border:2px solid var(--white);
-}
 .topbar-user-btn {
   display:flex; align-items:center; gap:10px;
   padding:5px 12px 5px 5px; border-radius:var(--radius);
@@ -196,50 +191,6 @@ input, select, textarea { font-family:inherit; }
   color:var(--gray-500);
 }
 .topbar-search button:hover{ background:var(--blue-light); color:var(--blue); }
-
-/* Notifications */
-.notif-btn {
-  width:36px; height:36px;
-  border-radius:var(--radius);
-  display:flex; align-items:center; justify-content:center;
-  color:var(--gray-500);
-  position:relative;
-}
-.notif-btn:hover{ background:var(--blue-light); color:var(--blue); }
-.notif-badge {
-  position:absolute; top:4px; right:4px;
-  min-width:16px; height:16px;
-  padding:0 4px;
-  border-radius:999px;
-  background:var(--orange);
-  color:white;
-  font-size:10px;
-  display:flex; align-items:center; justify-content:center;
-  font-weight:800;
-  border:2px solid var(--white);
-}
-.notif-dropdown {
-  position:absolute;
-  top:46px; right:0;
-  width:320px;
-  background:var(--white);
-  border:1px solid var(--gray-200);
-  border-radius:var(--radius-lg);
-  box-shadow:var(--shadow-lg);
-  display:none;
-  overflow:hidden;
-}
-.notif-dropdown.show{ display:block; }
-.notif-header {
-  padding:12px 14px;
-  border-bottom:1px solid var(--gray-200);
-  display:flex; align-items:center; justify-content:space-between;
-}
-.notif-header span{ font-weight:800; color:var(--blue-dark); }
-.notif-header a{ font-size:12px; color:var(--blue); font-weight:600; }
-.notif-header a:hover{ text-decoration:underline; }
-.notif-body{ padding:14px; }
-.notif-empty{ color:var(--gray-500); font-size:13px; }
 
 /* Page title (topbar) */
 .page-title {
@@ -943,6 +894,11 @@ input, select, textarea { font-family:inherit; }
   color: white; flex-shrink: 0;
 }
 .bs-text { font-size: 13px; color: rgba(255,255,255,0.82); font-weight: 500; line-height: 1.45; }
+.bs.done   { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.30); }
+.bs.done .bs-num { background: var(--green, #16a34a); }
+.bs.active { background: rgba(255,255,255,0.15); border-color: var(--orange, #e87722); }
+.bs.active .bs-num { background: var(--orange, #e87722); }
+.bs.active .bs-text { color: white; }
 
 /* Panneau DROITE blanc */
 .side-white {
@@ -1454,7 +1410,7 @@ input, select, textarea { font-family:inherit; }
 }
 .app-layout .badge-module {
   background: #000;
-  color: #fff;
+  color: #ffffff;
   border-radius: 999px;
   min-width: 40px;
   height: 34px;
@@ -1739,17 +1695,6 @@ input, select, textarea { font-family:inherit; }
   position: relative;
 }
 .app-layout .topbar-icon-btn:hover { color: var(--teal-dark); }
-.app-layout .notif-badge {
-  position: absolute;
-  top: -4px; right: -5px;
-  width: 16px; height: 16px;
-  border-radius: 50%;
-  background: var(--orange);
-  color: #fff;
-  font-size: 9px;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700;
-}
 .app-layout .user-avatar {
   width: 34px; height: 34px;
   border-radius: 50%;
@@ -1929,7 +1874,7 @@ input, select, textarea { font-family:inherit; }
   padding: 3px 10px;
   border-radius: 20px;
   font-size: 11px; font-weight: 600;
-  color: #ffffff;
+  color: #1ab98a;
   letter-spacing: 0.03em;
 }
 .app-layout .status-badge {

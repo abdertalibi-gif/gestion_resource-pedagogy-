@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -62,24 +62,40 @@
         <div class="orange-bar"></div>
         <p>Pas d'inqui&eacute;tude, r&eacute;initialiser votre acc&egrave;s est simple et rapide.</p>
 
-        <div class="blue-steps">
-          <div class="bs">
-            <div class="bs-num">1</div>
-            <div class="bs-text">Entrez votre adresse email institutionnelle</div>
-          </div>
-          <div class="bs">
-            <div class="bs-num">2</div>
-            <div class="bs-text">Recevez un lien de r&eacute;initialisation par email</div>
-          </div>
-          <div class="bs">
-            <div class="bs-num">3</div>
-            <div class="bs-text">D&eacute;finissez votre nouveau mot de passe</div>
-          </div>
-          <div class="bs">
-            <div class="bs-num">4</div>
-            <div class="bs-text">Reconnectez-vous &agrave; votre espace GesPed</div>
-          </div>
-        </div>
+        <c:choose>
+          <c:when test="${verified}">
+            <div class="blue-steps">
+              <div class="bs done">
+                <div class="bs-num"><i class="fas fa-check"></i></div>
+                <div class="bs-text">Identit&eacute; v&eacute;rifi&eacute;e — <strong>${userName}</strong></div>
+              </div>
+              <div class="bs active">
+                <div class="bs-num">2</div>
+                <div class="bs-text">D&eacute;finissez votre nouveau mot de passe</div>
+              </div>
+              <div class="bs">
+                <div class="bs-num">3</div>
+                <div class="bs-text">Reconnectez-vous &agrave; votre espace GesPed</div>
+              </div>
+            </div>
+          </c:when>
+          <c:otherwise>
+            <div class="blue-steps">
+              <div class="bs active">
+                <div class="bs-num">1</div>
+                <div class="bs-text">V&eacute;rifiez votre identit&eacute; (email + identit&eacute;)</div>
+              </div>
+              <div class="bs">
+                <div class="bs-num">2</div>
+                <div class="bs-text">D&eacute;finissez votre nouveau mot de passe</div>
+              </div>
+              <div class="bs">
+                <div class="bs-num">3</div>
+                <div class="bs-text">Reconnectez-vous &agrave; votre espace GesPed</div>
+              </div>
+            </div>
+          </c:otherwise>
+        </c:choose>
       </div>
     </div>
 
@@ -91,60 +107,141 @@
         <div class="form-eyebrow">
           <i class="fas fa-key"></i> R&eacute;cup&eacute;ration
         </div>
-        <h1 class="form-title">R&eacute;initialiser</h1>
-        <p class="form-subtitle">Entrez l'email associ&eacute; &agrave; votre compte pour recevoir un lien de r&eacute;initialisation.</p>
 
-        <!-- Info -->
-        <div class="info-box">
-          <i class="fas fa-info-circle"></i>
-          <span>Le lien de r&eacute;initialisation est valable <strong>15 minutes</strong>. V&eacute;rifiez &eacute;galement votre dossier <strong>spam</strong> si vous ne recevez pas l'email.</span>
-        </div>
+        <c:choose>
+          <c:when test="${verified}">
+            <%-- ========== PHASE 2 : Nouveau mot de passe ========== --%>
+            <h1 class="form-title">Nouveau mot de passe</h1>
+            <p class="form-subtitle">
+              Bonjour <strong>${userName}</strong>, choisissez votre nouveau mot de passe.
+            </p>
 
-        <!-- Alertes -->
-        <% if (request.getParameter("error") != null) { %>
-          <div class="alert alert-err">
-            <i class="fas fa-exclamation-circle"></i>
-            <span>Aucun compte trouv&eacute; avec cette adresse email.</span>
-          </div>
-        <% } %>
-        <% if (request.getParameter("sent") != null) { %>
-          <div class="alert alert-ok">
-            <i class="fas fa-check-circle"></i>
-            <span>Un email de r&eacute;initialisation a &eacute;t&eacute; envoy&eacute; &agrave; votre adresse. V&eacute;rifiez votre bo&icirc;te de r&eacute;ception.</span>
-          </div>
-        <% } %>
+            <c:if test="${not empty error}">
+              <div class="alert alert-err">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>${error}</span>
+              </div>
+            </c:if>
 
-        <!-- FORMULAIRE -->
-        <form id="forgotForm" action="${pageContext.request.contextPath}/forgot-password" method="post" autocomplete="on" novalidate>
+            <form id="resetForm" action="${pageContext.request.contextPath}/forgot-password" method="post" autocomplete="off" novalidate>
+              <input type="hidden" name="action" value="reset">
+              <input type="hidden" name="userId" value="${userId}">
 
-          <!-- Email -->
-          <div class="fgroup">
-            <label class="flabel" for="email">
-              <i class="fas fa-envelope"></i>Adresse email institutionnelle
-            </label>
-            <div class="finput-wrap">
-              <i class="fas fa-envelope finput-icon"></i>
-              <input type="email"
-                     id="email" name="email"
-                     class="finput"
-                     placeholder="votre.nom@univ.ma"
-                     autocomplete="email"
-                     required>
-            </div>
-            <div class="field-error" id="emailError">
-              <i class="fas fa-exclamation-triangle"></i>
-              <span>Veuillez entrer une adresse email valide.</span>
-            </div>
-          </div>
+              <div class="fgroup">
+                <label class="flabel" for="password">
+                  <i class="fas fa-lock"></i> Nouveau mot de passe
+                </label>
+                <div class="finput-wrap">
+                  <i class="fas fa-lock finput-icon"></i>
+                  <input type="password" id="password" name="password" class="finput" placeholder="Au moins 6 caract&egrave;res" minlength="6" required>
+                </div>
+                <div class="field-error" id="pwError">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  <span>Minimum 6 caract&egrave;res.</span>
+                </div>
+              </div>
 
-          <!-- Bouton -->
-          <button type="submit" class="btn-submit" id="submitBtn">
-            <span class="btn-icon"><i class="fas fa-paper-plane"></i></span>
-            <span class="btn-text">Envoyer le lien</span>
-            <span class="spinner"></span>
-          </button>
+              <div class="fgroup">
+                <label class="flabel" for="confirm">
+                  <i class="fas fa-check-circle"></i> Confirmer le mot de passe
+                </label>
+                <div class="finput-wrap">
+                  <i class="fas fa-check-circle finput-icon"></i>
+                  <input type="password" id="confirm" name="confirm" class="finput" placeholder="Retaper le mot de passe" required>
+                </div>
+                <div class="field-error" id="confirmError">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  <span>Les mots de passe ne correspondent pas.</span>
+                </div>
+              </div>
 
-        </form>
+              <button type="submit" class="btn-submit" id="resetBtn">
+                <span class="btn-icon"><i class="fas fa-save"></i></span>
+                <span class="btn-text">R&eacute;initialiser</span>
+                <span class="spinner"></span>
+              </button>
+            </form>
+          </c:when>
+          <c:otherwise>
+            <%-- ========== PHASE 1 : Vérification d'identité ========== --%>
+            <h1 class="form-title">R&eacute;initialiser</h1>
+            <p class="form-subtitle">
+              Entrez votre adresse email ainsi que votre nom et pr&eacute;nom pour v&eacute;rifier votre identit&eacute;.
+            </p>
+
+            <c:if test="${not empty error}">
+              <div class="alert alert-err">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>${error}</span>
+              </div>
+            </c:if>
+
+            <form id="verifyForm" action="${pageContext.request.contextPath}/forgot-password" method="post" autocomplete="on" novalidate>
+
+              <div class="fgroup">
+                <label class="flabel" for="email">
+                  <i class="fas fa-envelope"></i> Adresse email
+                </label>
+                <div class="finput-wrap">
+                  <i class="fas fa-envelope finput-icon"></i>
+                  <input type="email" id="email" name="email" class="finput" placeholder="votre.nom@univ.ma" autocomplete="email" required>
+                </div>
+                <div class="field-error" id="emailError">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  <span>Veuillez entrer une adresse email valide.</span>
+                </div>
+              </div>
+
+              <div class="fgroup">
+                <label class="flabel" for="nom">
+                  <i class="fas fa-user"></i> Nom
+                </label>
+                <div class="finput-wrap">
+                  <i class="fas fa-user finput-icon"></i>
+                  <input type="text" id="nom" name="nom" class="finput" placeholder="Votre nom de famille" autocomplete="family-name" required>
+                </div>
+                <div class="field-error" id="nomError">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  <span>Ce champ est obligatoire.</span>
+                </div>
+              </div>
+
+              <div class="fgroup">
+                <label class="flabel" for="prenom">
+                  <i class="fas fa-user"></i> Pr&eacute;nom
+                </label>
+                <div class="finput-wrap">
+                  <i class="fas fa-user finput-icon"></i>
+                  <input type="text" id="prenom" name="prenom" class="finput" placeholder="Votre pr&eacute;nom" autocomplete="given-name" required>
+                </div>
+                <div class="field-error" id="prenomError">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  <span>Ce champ est obligatoire.</span>
+                </div>
+              </div>
+
+              <div class="fgroup">
+                <label class="flabel" for="cne">
+                  <i class="fas fa-id-card"></i> CNE
+                </label>
+                <div class="finput-wrap">
+                  <i class="fas fa-id-card finput-icon"></i>
+                  <input type="text" id="cne" name="cne" class="finput" placeholder="Code National de l&#39;&Eacute;tudiant" autocomplete="off">
+                </div>
+                <div class="field-error" id="cneError">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  <span>CNE invalide.</span>
+                </div>
+              </div>
+
+              <button type="submit" class="btn-submit" id="verifyBtn">
+                <span class="btn-icon"><i class="fas fa-shield-alt"></i></span>
+                <span class="btn-text">V&eacute;rifier mon identit&eacute;</span>
+                <span class="spinner"></span>
+              </button>
+            </form>
+          </c:otherwise>
+        </c:choose>
 
         <div class="divider">ou</div>
 
@@ -177,50 +274,90 @@
 
   <script>
     (function() {
-      var form = document.getElementById('forgotForm');
-      var emailInput = document.getElementById('email');
-      var emailError = document.getElementById('emailError');
-      var submitBtn = document.getElementById('submitBtn');
+      var verifyForm = document.getElementById('verifyForm');
+      if (verifyForm) {
+        var emailInput   = document.getElementById('email');
+        var nomInput     = document.getElementById('nom');
+        var prenomInput  = document.getElementById('prenom');
+        var cneInput     = document.getElementById('cne');
+        var emailError   = document.getElementById('emailError');
+        var nomError     = document.getElementById('nomError');
+        var prenomError  = document.getElementById('prenomError');
+        var cneError     = document.getElementById('cneError');
+        var verifyBtn    = document.getElementById('verifyBtn');
+        var emailRegex   = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-      /* Regex email basique */
-      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-      /* Validation en temps réel quand l'utilisateur sort du champ */
-      emailInput.addEventListener('blur', function() {
-        if (this.value.trim() !== '' && !emailRegex.test(this.value.trim())) {
-          this.classList.add('input-error');
-          emailError.classList.add('show');
-        } else {
-          this.classList.remove('input-error');
-          emailError.classList.remove('show');
+        function clearError(input, errEl) {
+          input.classList.remove('input-error');
+          errEl.classList.remove('show');
         }
-      });
-
-      /* Retirer l'erreur quand l'utilisateur retape */
-      emailInput.addEventListener('input', function() {
-        this.classList.remove('input-error');
-        emailError.classList.remove('show');
-      });
-
-      /* Soumission */
-      form.addEventListener('submit', function(e) {
-        var val = emailInput.value.trim();
-
-        /* Validation */
-        if (!val || !emailRegex.test(val)) {
-          e.preventDefault();
-          emailInput.classList.add('input-error');
-          emailError.classList.add('show');
-          emailInput.focus();
-          return;
+        function showError(input, errEl) {
+          input.classList.add('input-error');
+          errEl.classList.add('show');
         }
 
-        /* État chargement */
-        submitBtn.classList.add('loading');
-        submitBtn.disabled = true;
-        /* Le formulaire est soumis normalement (pas d'AJAX)
-           le spinner sera visible pendant le redirect serveur */
-      });
+        emailInput.addEventListener('blur', function() {
+          if (this.value.trim() !== '' && !emailRegex.test(this.value.trim())) {
+            showError(this, emailError);
+          } else {
+            clearError(this, emailError);
+          }
+        });
+        emailInput.addEventListener('input', function() { clearError(this, emailError); });
+        nomInput.addEventListener('input', function() { clearError(this, nomError); });
+        prenomInput.addEventListener('input', function() { clearError(this, prenomError); });
+        cneInput.addEventListener('input', function() { clearError(this, cneError); });
+
+        verifyForm.addEventListener('submit', function(e) {
+          var ok = true;
+          if (!nomInput.value.trim())     { showError(nomInput, nomError);     ok = false; }
+          if (!prenomInput.value.trim())  { showError(prenomInput, prenomError); ok = false; }
+          var ev = emailInput.value.trim();
+          if (!ev || !emailRegex.test(ev)) { showError(emailInput, emailError); ok = false; }
+          if (cneInput.value.trim() && cneInput.value.trim().length < 4) { showError(cneInput, cneError); ok = false; }
+          if (!ok) { e.preventDefault(); return; }
+          verifyBtn.classList.add('loading');
+          verifyBtn.disabled = true;
+        });
+      }
+
+      var resetForm = document.getElementById('resetForm');
+      if (resetForm) {
+        var pwInput     = document.getElementById('password');
+        var confirmInput = document.getElementById('confirm');
+        var pwError     = document.getElementById('pwError');
+        var confirmError = document.getElementById('confirmError');
+        var resetBtn    = document.getElementById('resetBtn');
+
+        function clearPwErr() { pwInput.classList.remove('input-error'); pwError.classList.remove('show'); }
+        function clearConfErr() { confirmInput.classList.remove('input-error'); confirmError.classList.remove('show'); }
+
+        pwInput.addEventListener('input', clearPwErr);
+        confirmInput.addEventListener('input', function() {
+          clearConfErr();
+          if (this.value && pwInput.value && this.value !== pwInput.value) {
+            confirmInput.classList.add('input-error');
+            confirmError.classList.add('show');
+          }
+        });
+
+        resetForm.addEventListener('submit', function(e) {
+          var ok = true;
+          if (pwInput.value.length < 6) {
+            pwInput.classList.add('input-error');
+            pwError.classList.add('show');
+            ok = false;
+          }
+          if (pwInput.value !== confirmInput.value || !confirmInput.value) {
+            confirmInput.classList.add('input-error');
+            confirmError.classList.add('show');
+            ok = false;
+          }
+          if (!ok) { e.preventDefault(); return; }
+          resetBtn.classList.add('loading');
+          resetBtn.disabled = true;
+        });
+      }
     })();
   </script>
 

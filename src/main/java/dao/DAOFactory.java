@@ -35,9 +35,6 @@ public final class DAOFactory {
     public static TypeRessourceDAO getTypeRessourceDAO() {
         return new TypeRessourceDAO();
     }
-    public static NotificationDAO getNotificationDAO() {
-        return new NotificationDAO();
-    }
     public static FavoriDAO getFavoriDAO() {
         return new FavoriDAO();
     }
@@ -50,4 +47,8 @@ public final class DAOFactory {
     public static DevoirDAO getDevoirDAO() {
         return new DevoirDAO();
     }
+    public static ResetTokenDAO getResetTokenDAO() {
+        return new ResetTokenDAO();
+    }
+    
 }

@@ -46,7 +46,7 @@
                     <div class="card-body">
                         <div class="detail-row">
                             <span class="detail-label">Étudiant</span>
-                            <span class="detail-value">${soumission.etudiant.nom}</span>
+                            <span class="detail-value">${soumission.etudiant.prenom} ${soumission.etudiant.nom}</span>
                         </div>
                         <div class="detail-row">
                             <span class="detail-label">Titre</span>

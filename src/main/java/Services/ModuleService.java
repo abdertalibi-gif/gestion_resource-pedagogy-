@@ -40,12 +40,23 @@ public class ModuleService {
             return ServiceResult.failure(erreurs);
         }
 
-        int id = moduleDAO.insert(m);
-        if (id > 0) {
-            m.setIdModule(id);
-            return ServiceResult.success(m, "Module cree avec succes");
+        try {
+            int id = moduleDAO.insert(m);
+            if (id > 0) {
+                m.setIdModule(id);
+                return ServiceResult.success(m, "Module cree avec succes");
+            }
+            return ServiceResult.failure("Erreur lors de la creation du module");
+        } catch (Exception e) {
+            String msg = e.getMessage();
+            if (msg != null && msg.contains("Duplicate entry")) {
+                return ServiceResult.failure("Un module avec le code \"" + m.getCodeModule() + "\" existe deja");
+            }
+            if (msg != null && msg.contains("foreign key constraint")) {
+                return ServiceResult.failure("La filiere ou le semestre selectionne n'existe pas");
+            }
+            return ServiceResult.failure("Erreur lors de la creation du module : " + msg);
         }
-        return ServiceResult.failure("Erreur lors de la creation du module");
     }
 
     public ServiceResult<Module> update(Module m) {
@@ -54,10 +65,18 @@ public class ModuleService {
             return ServiceResult.failure(erreurs);
         }
 
-        if (moduleDAO.update(m)) {
-            return ServiceResult.success(m, "Module modifie avec succes");
+        try {
+            if (moduleDAO.update(m)) {
+                return ServiceResult.success(m, "Module modifie avec succes");
+            }
+            return ServiceResult.failure("Erreur lors de la modification");
+        } catch (Exception e) {
+            String msg = e.getMessage();
+            if (msg != null && msg.contains("Duplicate entry")) {
+                return ServiceResult.failure("Un module avec le code \"" + m.getCodeModule() + "\" existe deja");
+            }
+            return ServiceResult.failure("Erreur lors de la modification : " + msg);
         }
-        return ServiceResult.failure("Erreur lors de la modification");
     }
 
     public boolean delete(int id) {

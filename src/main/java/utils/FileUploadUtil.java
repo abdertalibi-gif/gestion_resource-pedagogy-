@@ -84,4 +84,26 @@ public final class FileUploadUtil {
         if (contentType.startsWith("image/")) return "images";
         return "documents";
     }
+
+    public static java.nio.file.Path resolveExternalPath(String cheminFichier) {
+        String clean = cheminFichier.replaceFirst("^/assets/uploads/?", "");
+        java.nio.file.Path external = java.nio.file.Paths.get(Constants.UPLOAD_DIR_EXTERNAL, clean);
+        if (java.nio.file.Files.exists(external)) return external;
+        // Fallback: ancien dossier webapp (GestionRessourcesPedagogiques)
+        java.nio.file.Path old = java.nio.file.Paths.get(
+            "C:/xampp/tomcat/webapps/GestionRessourcesPedagogiques/assets/uploads", clean);
+        if (java.nio.file.Files.exists(old)) return old;
+        return external;
+    }
+
+    public static String getExternalUploadPath() {
+        String path = Constants.UPLOAD_DIR_EXTERNAL;
+        java.nio.file.Path dir = java.nio.file.Paths.get(path);
+        try {
+            java.nio.file.Files.createDirectories(dir);
+        } catch (java.io.IOException e) {
+            System.err.println("FileUploadUtil: " + e.getMessage());
+        }
+        return path;
+    }
 }

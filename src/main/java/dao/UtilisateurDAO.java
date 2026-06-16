@@ -342,8 +342,8 @@ public class UtilisateurDAO {
         return 1; // defaut: ADMIN
     }
 
-	public void updateMotDePasse(int utilisateurId, String nouveauMotDePasse) {
-		// TODO Auto-generated method stub
-		
+	public boolean updateMotDePasse(int utilisateurId, String nouveauMotDePasse) {
+		String hashed = utils.PasswordUtil.hash(nouveauMotDePasse);
+		return updatePassword(utilisateurId, hashed);
 	}
 }

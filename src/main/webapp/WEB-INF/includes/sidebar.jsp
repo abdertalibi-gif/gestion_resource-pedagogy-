@@ -95,9 +95,6 @@
             <a href="${pageContext.request.contextPath}/admin/dashboard" class="nav-item ${activeMenu == 'dashboard' ? 'active' : ''}">
                 <i class="fas fa-th-large"></i> Tableau de bord
             </a>
-            <a href="${pageContext.request.contextPath}/admin/demandes" class="nav-item ${activeMenu == 'demandes' ? 'active' : ''}">
-                <i class="fas fa-clock"></i> Demandes d'inscription
-            </a>
         </div>
         <div class="sidebar-section">
             <div class="sidebar-section-label">Gestion</div>
@@ -121,6 +118,9 @@
             </a>
             <a href="${pageContext.request.contextPath}/admin/affectations" class="nav-item ${activeMenu == 'affectations' ? 'active' : ''}">
                 <i class="fas fa-link"></i> Affectations
+            </a>
+            <a href="${pageContext.request.contextPath}/admin/import" class="nav-item ${activeMenu == 'import' ? 'active' : ''}">
+                <i class="fas fa-file-import"></i> Import Excel
             </a>
         </div>
         <div class="sidebar-section">

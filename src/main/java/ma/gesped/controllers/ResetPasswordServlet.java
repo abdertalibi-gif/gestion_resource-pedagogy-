@@ -1,5 +1,6 @@
 package ma.gesped.controllers;
 
+import dao.DAOFactory;
 import dao.ResetTokenDAO;
 import dao.UtilisateurDAO;
 import models.ResetToken;
@@ -21,12 +22,8 @@ public class ResetPasswordServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        String url = getServletContext().getInitParameter("jdbcURL");
-        String user = getServletContext().getInitParameter("jdbcUsername");
-        String pass = getServletContext().getInitParameter("jdbcPassword");
-
-        tokenDAO = new ResetTokenDAO(url, user, pass);
-        utilisateurDAO = new UtilisateurDAO();
+        tokenDAO = DAOFactory.getResetTokenDAO();
+        utilisateurDAO = DAOFactory.getUtilisateurDAO();
     }
 
     @Override
@@ -99,7 +96,6 @@ public class ResetPasswordServlet extends HttpServlet {
             }
 
             // Mettre à jour le mot de passe
-            // ADAPTEZ cette méthode selon votre UtilisateurDAO
             utilisateurDAO.updateMotDePasse(rt.getUtilisateurId(), nouveauMotDePasse);
 
             // Marquer le token comme utilisé

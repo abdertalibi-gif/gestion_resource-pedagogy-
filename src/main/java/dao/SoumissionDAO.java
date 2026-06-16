@@ -18,7 +18,7 @@ public class SoumissionDAO {
 
     private static final String SELECT_BASE =
         "SELECT s.*, m.nom_module, m.code_module, " +
-        "CONCAT(u.prenom, ' ', u.nom) AS nom_etudiant, " +
+        "u.prenom, u.nom AS nom_etudiant, " +
         "d.id_devoir, d.titre AS devoir_titre " +
         "FROM soumissions s " +
         "JOIN modules m ON s.id_module = m.id_module " +
@@ -72,6 +72,7 @@ public class SoumissionDAO {
         s.setModule(mod);
 
         Utilisateur etu = new Utilisateur();
+        etu.setPrenom(rs.getString("prenom"));
         etu.setNom(rs.getString("nom_etudiant"));
         s.setEtudiant(etu);
 

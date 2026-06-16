@@ -58,16 +58,19 @@
 
                 <c:choose>
                     <c:when test="${not empty modules}">
-                        <div class="modules-grid">
+                        <div class="cards-grid">
                             <c:forEach var="m" items="${modules}">
-                                <div class="module-card">
-                                    <div class="module-icon"><i class="fas fa-book"></i></div>
-                                    <div class="module-info">
-                                        <h4>${m.codeModule} — ${m.nomModule}</h4>
-                                        <p class="module-prof"><i class="fas fa-chalkboard-teacher"></i> ${m.nomProfesseur != null ? m.nomProfesseur : 'Professeur non assigné'}</p>
-                                        <p class="module-desc">${m.description != null ? m.description : 'Aucune description'}</p>
+                                <a href="${pageContext.request.contextPath}/etudiant/ressources?module=${m.idModule}"
+                                   class="info-card clickable">
+                                    <div class="info-card-header">
+                                        <span class="badge badge-module">${m.codeModule}</span>
                                     </div>
-                                </div>
+                                    <h4>${m.nomModule}</h4>
+                                    <p><i class="fas fa-chalkboard-teacher"></i> ${m.nomProfesseur != null ? m.nomProfesseur : 'Professeur non assigné'}</p>
+                                    <c:if test="${not empty m.description}">
+                                        <p class="text-muted">${m.description}</p>
+                                    </c:if>
+                                </a>
                             </c:forEach>
                         </div>
                     </c:when>
@@ -82,6 +85,7 @@
             </div>
         </div>
     </div>
-    <script>const s=document.getElementById('sidebarToggle'),b=document.getElementById('sidebar'),o=document.getElementById('sidebarOverlay');if(s)s.addEventListener('click',function(){b.classList.toggle('open');o.classList.toggle('open')});if(o)o.addEventListener('click',function(){b.classList.remove('open');o.classList.remove('open')})</script>
+    <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/dashboard.js"></script>
 </body>
 </html>
