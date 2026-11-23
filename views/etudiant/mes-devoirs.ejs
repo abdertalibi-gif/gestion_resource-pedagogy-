@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes devoirs — GesPed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Raleway:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css?v=1">
+    <link rel="stylesheet" href="/assets/css/components.css?v=1">
+    <link rel="stylesheet" href="/assets/css/responsive.css?v=1">
+</head>
+<body class="app-layout">
+    <%- include('../includes/sidebar') %>
+    <div class="main-content">
+        <%- include('../includes/topbar') %>
+
+        <div class="content-wrapper">
+            <div class="welcome-banner">
+                <div class="welcome-text">
+                    <h2>Bienvenue, <%= nomComplet %> !</h2>
+                    <p>Consultez vos devoirs &agrave; rendre.</p>
+                </div>
+                <i class="fas fa-tasks welcome-icon"></i>
+            </div>
+
+            <div class="page-header">
+                <h3>Mes devoirs &agrave; rendre</h3>
+            </div>
+
+            <% if (!devoirs || devoirs.length === 0) { %>
+                <div class="empty-state">
+                    <i class="fas fa-tasks fa-3x"></i>
+                    <p>Aucun devoir pour le moment.</p>
+                </div>
+            <% } else { %>
+                <div class="cards-grid">
+                    <% devoirs.forEach(d => { %>
+                        <div class="info-card">
+                            <div class="info-card-header">
+                                <span class="badge badge-module"><%= d.module.codeModule %></span>
+                                <% if (d.depasse) { %><span class="badge badge-danger">D&eacute;pass&eacute;</span><% } %>
+                            </div>
+                            <h4><%= d.titre %></h4>
+                            <p><i class="fas fa-chalkboard-teacher"></i> <%= d.professeur.nom %></p>
+                            <% if (d.description) { %>
+                                <p class="text-muted"><%= d.description %></p>
+                            <% } %>
+                            <div class="resource-card-meta" style="margin-top:10px;">
+                                <% if (d.dateLimite) { %>
+                                    <span class="resource-size"><i class="fas fa-clock"></i> Limite : <%= d.dateLimiteDate %> <%= d.dateLimiteTime %></span>
+                                <% } %>
+                            </div>
+                            <div style="margin-top:12px;">
+                                <a href="/etudiant/soumettre?idDevoir=<%= d.idDevoir %>" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-upload"></i> Soumettre
+                                </a>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } %>
+        </div>
+    </div>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/dashboard.js"></script>
+</body>
+</html>

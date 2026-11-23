@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche — GesPed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Raleway:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css?v=1">
+    <link rel="stylesheet" href="/assets/css/components.css?v=1">
+    <link rel="stylesheet" href="/assets/css/responsive.css?v=1">
+</head>
+<body class="app-layout">
+    <%- include('../includes/sidebar') %>
+    <div class="main-content">
+        <%- include('../includes/topbar') %>
+        <div class="content-wrapper">
+            <div class="welcome-banner">
+                <div class="welcome-text">
+                    <h2>Bienvenue, <%= nomComplet %> !</h2>
+                    <p>Recherchez des ressources par mot-cl&eacute;, module ou professeur.</p>
+                </div>
+                <i class="fas fa-search welcome-icon"></i>
+            </div>
+
+            <div class="page-header"><h3><i class="fas fa-search"></i> Recherche de ressources</h3></div>
+
+            <form method="get" action="/etudiant/recherche" class="filter-bar" style="margin-bottom:24px;">
+                <div style="display:flex;gap:10px;flex:1;max-width:500px;">
+                    <input type="text" name="q" value="<%= keyword %>" placeholder="Rechercher par titre, module, description..."
+                           class="form-input">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Rechercher</button>
+                </div>
+            </form>
+
+            <% if (keyword) { %>
+                <p style="margin-bottom:20px;font-size:14px;">
+                    <strong><%= resultats.length %></strong> r&eacute;sultat(s) pour "<strong><%= keyword %></strong>"
+                </p>
+            <% } %>
+
+            <div class="cards-grid">
+                <% (resultats || []).forEach(r => { %>
+                    <div class="resource-card">
+                        <div class="resource-card-icon" style="color:<%= r.couleurType %>;background:<%= r.couleurType %>15;">
+                            <i class="fas <%= r.iconeType %>"></i>
+                        </div>
+                        <div class="resource-card-body">
+                            <h4><%= r.titre %></h4>
+                            <p class="resource-meta-text"><%= r.module.nomModule %> — <%= r.professeur.nom %></p>
+                            <div class="resource-card-meta">
+                                <span class="badge" style="background:<%= r.couleurType %>"><%= r.type.nomType %></span>
+                                <span class="resource-size"><%= r.tailleFormatee %></span>
+                            </div>
+                        </div>
+                        <div class="resource-card-actions">
+                            <a href="/etudiant/ressource/voir?id=<%= r.idRessource %>" class="btn-action btn-view"><i class="fas fa-eye"></i></a>
+                            <a href="/etudiant/ressource/telecharger?id=<%= r.idRessource %>" class="btn-action btn-download"><i class="fas fa-download"></i></a>
+                            <% if (r.estFavori) { %>
+                                <a href="/etudiant/favori/retirer?id=<%= r.idRessource %>" class="btn-action btn-fav-active"><i class="fas fa-star"></i></a>
+                            <% } else { %>
+                                <a href="/etudiant/favori/ajouter?id=<%= r.idRessource %>" class="btn-action btn-fav"><i class="far fa-star"></i></a>
+                            <% } %>
+                        </div>
+                    </div>
+                <% }) %>
+                <% if (keyword && (!resultats || resultats.length === 0)) { %>
+                    <div class="empty-state" style="grid-column:1/-1;">
+                        <i class="fas fa-search"></i><h4>Aucun r&eacute;sultat</h4>
+                        <p>Essayez avec d'autres mots-cl&eacute;s</p>
+                    </div>
+                <% } %>
+                <% if (!keyword) { %>
+                    <div class="empty-state" style="grid-column:1/-1;">
+                        <i class="fas fa-search"></i><h4>Entrez un terme de recherche</h4>
+                        <p>Recherchez par titre, module, description...</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes modules — GesPed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Raleway:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css?v=1">
+    <link rel="stylesheet" href="/assets/css/components.css?v=1">
+    <link rel="stylesheet" href="/assets/css/responsive.css?v=1">
+</head>
+<body class="app-layout">
+    <%- include('../includes/sidebar') %>
+
+    <div class="main-content">
+        <%- include('../includes/topbar') %>
+
+        <div class="content-wrapper">
+            <% if (msgSuccess) { %><div class="alert alert-success"><i class="fas fa-check-circle"></i> <%= msgSuccess %><button class="alert-close" onclick="this.parentElement.remove()">&times;</button></div><% } %>
+            <% if (msgError) { %><div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> <%= msgError %><button class="alert-close" onclick="this.parentElement.remove()">&times;</button></div><% } %>
+
+            <div class="welcome-banner">
+                <div class="welcome-text">
+                    <h2>Bienvenue, <%= nomComplet %> !</h2>
+                    <p>D&eacute;couvrez les modules de votre fili&egrave;re.</p>
+                </div>
+                <i class="fas fa-book welcome-icon"></i>
+            </div>
+
+            <div class="page-header">
+                <h1>Mes modules</h1>
+                <p>
+                    <% if (utilisateur && utilisateur.filiere) { %>
+                        <span class="badge badge-filiere"><i class="fas fa-layer-group"></i> <%= utilisateur.filiere.nomFiliere %></span>
+                    <% } %>
+                    <% if (utilisateur && utilisateur.semestre) { %>
+                        <span class="badge badge-semestre"><i class="fas fa-calendar-alt"></i> <%= utilisateur.semestre.nomSemestre %></span>
+                    <% } %>
+                </p>
+            </div>
+
+            <div class="dashboard-section">
+                <div class="section-header"><h3><i class="fas fa-book"></i> Liste des modules</h3></div>
+
+                <% if (modules && modules.length > 0) { %>
+                    <div class="cards-grid">
+                        <% modules.forEach(m => { %>
+                            <a href="/etudiant/ressources?module=<%= m.idModule %>" class="info-card clickable">
+                                <div class="info-card-header">
+                                    <span class="badge badge-module"><%= m.codeModule %></span>
+                                </div>
+                                <h4><%= m.nomModule %></h4>
+                                <p><i class="fas fa-chalkboard-teacher"></i> <%= m.nomProfesseur || 'Professeur non assigné' %></p>
+                                <% if (m.description) { %>
+                                    <p class="text-muted"><%= m.description %></p>
+                                <% } %>
+                            </a>
+                        <% }) %>
+                    </div>
+                <% } else { %>
+                    <div class="empty-state">
+                        <div class="empty-state-icon"><i class="fas fa-book-open"></i></div>
+                        <div class="empty-state-title">Aucun module disponible</div>
+                        <div class="empty-state-text">Votre fili&egrave;re n'a pas encore de modules assign&eacute;s. Contactez l'administrateur.</div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/dashboard.js"></script>
+</body>
+</html>

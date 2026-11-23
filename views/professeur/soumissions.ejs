@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soumissions — GesPed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Raleway:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css?v=1">
+    <link rel="stylesheet" href="/assets/css/components.css?v=1">
+    <link rel="stylesheet" href="/assets/css/responsive.css?v=1">
+</head>
+<body class="app-layout">
+    <%- include('../includes/sidebar') %>
+    <div class="main-content">
+        <%- include('../includes/topbar') %>
+
+        <div class="content-wrapper">
+            <% if (msgSuccess) { %><div class="alert alert-success"><i class="fas fa-check-circle"></i> <%= msgSuccess %><button class="alert-close" onclick="this.parentElement.remove()">&times;</button></div><% } %>
+            <% if (msgError) { %><div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> <%= msgError %><button class="alert-close" onclick="this.parentElement.remove()">&times;</button></div><% } %>
+
+            <div class="welcome-banner">
+                <div class="welcome-text">
+                    <h2>Bienvenue, <%= nomComplet %> !</h2>
+                    <p>Consultez les soumissions de vos étudiants.</p>
+                </div>
+                <i class="fas fa-check-circle welcome-icon"></i>
+            </div>
+
+            <div class="page-header">
+                <div><h1>Soumissions des étudiants</h1><p>Consultez les soumissions de vos étudiants</p></div>
+            </div>
+
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <div class="section-header-left">
+                        <h3><i class="fas fa-inbox"></i> Liste des soumissions <span class="count"><%= soumissions.length %></span></h3>
+                    </div>
+                    <div class="toolbar">
+                        <form method="get" class="filter-form" style="margin:0">
+                            <select id="module" name="module" class="form-select" onchange="this.form.submit()">
+                                <option value="">Tous les modules</option>
+                                <% modules.forEach(function(m) { %>
+                                    <option value="<%= m.idModule %>" <%= moduleFilter == String(m.idModule) ? 'selected' : '' %>><%= m.codeModule %> — <%= m.nomModule %></option>
+                                <% }); %>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+
+                <% if (soumissions && soumissions.length > 0) { %>
+                    <div class="table-responsive">
+                        <table class="table" id="submissionsTable">
+                            <thead>
+                                <tr>
+                                    <th>Étudiant</th>
+                                    <th>Titre</th>
+                                    <th>Module</th>
+                                    <th>Fichier</th>
+                                    <th>Date</th>
+                                    <th>Statut</th>
+                                    <th style="text-align:center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% soumissions.forEach(function(s, idx) { %>
+                                    <tr>
+                                        <td>
+                                            <div class="student-name-cell">
+                                                <div class="student-avatar-sm av-<%= idx % 8 %>"><%= (s.etudiant.prenom?.charAt(0) || '') + (s.etudiant.nom?.charAt(0) || '') %></div>
+                                                <div class="student-name-text"><%= s.etudiant.prenom %> <%= s.etudiant.nom %></div>
+                                            </div>
+                                        </td>
+                                        <td><strong><%= s.titre %></strong></td>
+                                        <td><span class="filiere-badge"><i class="fas fa-book"></i> <%= s.module.codeModule %></span></td>
+                                        <td><i class="fas fa-file"></i> <%= s.nomFichier %> <small style="color:var(--text-muted)">(<%= s.tailleFormatee %>)</small></td>
+                                        <td><%= s.dateSoumissionDate %> <small style="color:var(--text-muted)"><%= s.dateSoumissionTime %></small></td>
+                                        <td><span class="status-badge <%= s.statutBadge %>"><%= s.statutLabel %></span></td>
+                                        <td>
+                                            <div class="actions-cell" style="justify-content:center">
+                                                <a href="/professeur/soumission/voir?id=<%= s.idSoumission %>" class="action-btn" title="Évaluer"><i class="fas fa-check-circle"></i></a>
+                                                <a href="/professeur/soumission/telecharger?id=<%= s.idSoumission %>" class="action-btn" title="Voir" target="_blank"><i class="fas fa-eye"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } else { %>
+                    <div class="empty-state">
+                        <div class="empty-state-icon"><i class="fas fa-inbox"></i></div>
+                        <div class="empty-state-title">Aucune soumission pour le moment</div>
+                        <div class="empty-state-text">Les soumissions des étudiants apparaîtront ici une fois qu'ils auront soumis leurs devoirs.</div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <script>
+        var sidebarToggle = document.getElementById('sidebarToggle'),
+            sidebar = document.getElementById('sidebar'),
+            overlay = document.getElementById('sidebarOverlay');
+        if (sidebarToggle) sidebarToggle.addEventListener('click', function() { sidebar.classList.toggle('open'); overlay.classList.toggle('open'); });
+        if (overlay) overlay.addEventListener('click', function() { sidebar.classList.remove('open'); overlay.classList.remove('open'); });
+    </script>
+</body>
+</html>

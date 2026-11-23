@@ -1,0 +1,126 @@
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+        <span class="brand-name">GesPed</span>
+        <span class="brand-role">
+            <% if (role === 'ADMIN') { %>System Admin<% } else if (role === 'ETUDIANT') { %>Espace &Eacute;tudiant<% } else if (role === 'PROFESSEUR') { %>Espace Professeur<% } %>
+        </span>
+    </div>
+
+    <% if (role === 'ETUDIANT') { %>
+        <div class="sidebar-section">
+            <div class="sidebar-section-label">Navigation</div>
+            <a href="/etudiant/dashboard" class="nav-item <%= activeMenu === 'dashboard' ? 'active' : '' %>">
+                <i class="fas fa-th-large"></i> Tableau de bord
+            </a>
+            <a href="/etudiant/modules" class="nav-item <%= activeMenu === 'modules' ? 'active' : '' %>">
+                <i class="fas fa-book"></i> Mes modules
+            </a>
+            <a href="/etudiant/ressources" class="nav-item <%= activeMenu === 'ressources' ? 'active' : '' %>">
+                <i class="fas fa-folder-open"></i> Ressources
+            </a>
+            <a href="/etudiant/recherche" class="nav-item <%= activeMenu === 'recherche' ? 'active' : '' %>">
+                <i class="fas fa-search"></i> Recherche
+            </a>
+            <a href="/etudiant/favoris" class="nav-item <%= activeMenu === 'favoris' ? 'active' : '' %>">
+                <i class="fas fa-star"></i> Favoris
+            </a>
+            <a href="/etudiant/devoirs" class="nav-item <%= activeMenu === 'devoirs' ? 'active' : '' %>">
+                <i class="fas fa-tasks"></i> Devoirs
+            </a>
+            <a href="/etudiant/historique" class="nav-item <%= activeMenu === 'historique' ? 'active' : '' %>">
+                <i class="fas fa-history"></i> Historique
+            </a>
+            <a href="/etudiant/mes-soumissions" class="nav-item <%= activeMenu === 'mes-soumissions' ? 'active' : '' %>">
+                <i class="fas fa-tasks"></i> Mes soumissions
+            </a>
+            <a href="/etudiant/soumettre" class="nav-item <%= activeMenu === 'soumettre' ? 'active' : '' %>">
+                <i class="fas fa-upload"></i> Soumettre
+            </a>
+            <a href="/etudiant/profil" class="nav-item <%= activeMenu === 'profil' ? 'active' : '' %>">
+                <i class="fas fa-user"></i> Mon profil
+            </a>
+        </div>
+    <% } %>
+
+    <% if (role === 'PROFESSEUR') { %>
+        <div class="sidebar-section">
+            <div class="sidebar-section-label">Navigation</div>
+            <a href="/professeur/dashboard" class="nav-item <%= activeMenu === 'dashboard' ? 'active' : '' %>">
+                <i class="fas fa-th-large"></i> Tableau de bord
+            </a>
+            <a href="/professeur/modules" class="nav-item <%= activeMenu === 'modules' ? 'active' : '' %>">
+                <i class="fas fa-book"></i> Mes modules
+            </a>
+            <a href="/professeur/ressources" class="nav-item <%= activeMenu === 'ressources' ? 'active' : '' %>">
+                <i class="fas fa-file-alt"></i> Mes ressources
+            </a>
+            <a href="/professeur/ressource/ajouter" class="nav-item <%= activeMenu === 'upload' ? 'active' : '' %>">
+                <i class="fas fa-cloud-upload-alt"></i> D&eacute;poser
+            </a>
+            <a href="/professeur/devoirs" class="nav-item <%= activeMenu === 'devoirs' ? 'active' : '' %>">
+                <i class="fas fa-tasks"></i> Devoirs
+            </a>
+            <a href="/professeur/soumissions" class="nav-item <%= activeMenu === 'soumissions' ? 'active' : '' %>">
+                <i class="fas fa-tasks"></i> Soumissions
+            </a>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-section-label">Analyse</div>
+            <a href="/professeur/statistiques" class="nav-item <%= activeMenu === 'statistiques' ? 'active' : '' %>">
+                <i class="fas fa-chart-bar"></i> Statistiques
+            </a>
+        </div>
+    <% } %>
+
+    <% if (role === 'ADMIN') { %>
+        <div class="sidebar-section">
+            <div class="sidebar-section-label">Principal</div>
+            <a href="/admin/dashboard" class="nav-item <%= activeMenu === 'dashboard' ? 'active' : '' %>">
+                <i class="fas fa-th-large"></i> Tableau de bord
+            </a>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-section-label">Gestion</div>
+            <a href="/admin/etudiants" class="nav-item <%= activeMenu === 'etudiants' ? 'active' : '' %>">
+                <i class="fas fa-users"></i> &Eacute;tudiants
+            </a>
+            <a href="/admin/professeurs" class="nav-item <%= activeMenu === 'professeurs' ? 'active' : '' %>">
+                <i class="fas fa-chalkboard-teacher"></i> Professeurs
+            </a>
+            <a href="/admin/utilisateurs" class="nav-item <%= activeMenu === 'utilisateurs' ? 'active' : '' %>">
+                <i class="fas fa-user-cog"></i> Utilisateurs
+            </a>
+            <a href="/admin/modules" class="nav-item <%= activeMenu === 'modules' ? 'active' : '' %>">
+                <i class="fas fa-book"></i> Modules
+            </a>
+            <a href="/admin/ressources" class="nav-item <%= activeMenu === 'ressources' ? 'active' : '' %>">
+                <i class="fas fa-file-alt"></i> Ressources
+            </a>
+            <a href="/admin/filieres" class="nav-item <%= activeMenu === 'filieres' ? 'active' : '' %>">
+                <i class="fas fa-layer-group"></i> Fili&egrave;res
+            </a>
+            <a href="/admin/semestres" class="nav-item <%= activeMenu === 'semestres' ? 'active' : '' %>">
+                <i class="fas fa-calendar-alt"></i> Semestres
+            </a>
+            <a href="/admin/affectations" class="nav-item <%= activeMenu === 'affectations' ? 'active' : '' %>">
+                <i class="fas fa-link"></i> Affectations
+            </a>
+            <a href="/admin/import" class="nav-item <%= activeMenu === 'import' ? 'active' : '' %>">
+                <i class="fas fa-file-import"></i> Import Excel
+            </a>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-section-label">Analyse</div>
+            <a href="/admin/statistiques" class="nav-item <%= activeMenu === 'statistiques' ? 'active' : '' %>">
+                <i class="fas fa-chart-bar"></i> Statistiques
+            </a>
+        </div>
+    <% } %>
+
+    <div class="sidebar-footer">
+        <a href="/logout" class="nav-item-logout">
+            <i class="fas fa-sign-out-alt"></i> D&eacute;connexion
+        </a>
+    </div>
+</aside>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>

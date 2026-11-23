@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= devoir.titre %> — GesPed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Raleway:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css?v=1">
+    <link rel="stylesheet" href="/assets/css/components.css?v=1">
+    <link rel="stylesheet" href="/assets/css/responsive.css?v=1">
+</head>
+<body class="app-layout">
+    <%- include('../includes/sidebar') %>
+    <div class="main-content">
+        <%- include('../includes/topbar') %>
+
+        <div class="content-wrapper">
+            <div class="welcome-banner">
+                <div class="welcome-text">
+                    <h2>Bienvenue, <%= nomComplet %> !</h2>
+                    <p>Détails du devoir et soumissions.</p>
+                </div>
+                <i class="fas fa-eye welcome-icon"></i>
+            </div>
+
+            <div class="page-header">
+                <h3><%= devoir.titre %></h3>
+                <div class="header-actions">
+                    <a href="/professeur/devoirs" class="btn btn-outline">
+                        <i class="fas fa-arrow-left"></i> Retour
+                    </a>
+                    <a href="/professeur/devoir/supprimer?id=<%= devoir.idDevoir %>"
+                       class="btn btn-danger"
+                       onclick="return confirm('Supprimer ce devoir ?')">
+                        <i class="fas fa-trash"></i> Supprimer
+                    </a>
+                </div>
+            </div>
+
+            <div class="detail-grid">
+                <div class="card">
+                    <div class="card-header"><h4>Informations</h4></div>
+                    <div class="card-body">
+                        <div class="detail-row">
+                            <span class="detail-label">Module</span>
+                            <span class="detail-value"><%= devoir.module.codeModule %> — <%= devoir.module.nomModule %></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Description</span>
+                            <span class="detail-value"><%= devoir.description || 'Aucune description' %></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Date limite</span>
+                            <span class="detail-value">
+                                <% if (devoir.dateLimite) { %>
+                                    <%= devoir.dateLimiteDate %> à <%= devoir.dateLimiteTime %>
+                                    <% if (devoir.depasse) { %><span class="badge badge-danger">Dépassé</span><% } %>
+                                <% } else { %>Pas de date limite<% } %>
+                            </span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Soumissions</span>
+                            <span class="detail-value"><span class="badge badge-info"><%= devoir.nbSoumissions %></span></span>
+                        </div>
+                        <% if (devoir.nomFichier) { %>
+                            <div class="detail-row">
+                                <span class="detail-label">Sujet</span>
+                                <span class="detail-value"><%= devoir.nomFichier %></span>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h3>Soumissions (<%= devoir.nbSoumissions %>)</h3>
+                </div>
+
+                <% if (!soumissions || soumissions.length === 0) { %>
+                    <div class="empty-state">
+                        <i class="fas fa-inbox fa-3x"></i>
+                        <p>Aucune soumission pour ce devoir.</p>
+                    </div>
+                <% } else { %>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Étudiant</th>
+                                    <th>Titre</th>
+                                    <th>Fichier</th>
+                                    <th>Date</th>
+                                    <th>Statut</th>
+                                    <th>Note</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% soumissions.forEach(function(s) { %>
+                                    <tr>
+                                        <td><strong><%= s.etudiant.nomComplet || s.etudiant.nom %></strong></td>
+                                        <td><%= s.titre %></td>
+                                        <td><%= s.nomFichier %> <small>(<%= s.tailleFormatee %>)</small></td>
+                                        <td><%= s.dateSoumissionDate %> <small><%= s.dateSoumissionTime %></small></td>
+                                        <td><span class="badge <%= s.statutBadge %>"><%= s.statutLabel %></span></td>
+                                        <td><%= s.note !== null && s.note !== undefined ? s.note + '/20' : '—' %></td>
+                                        <td>
+                                            <a href="/professeur/soumission/voir?id=<%= s.idSoumission %>" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-check-circle"></i> Évaluer
+                                            </a>
+                                            <a href="/professeur/soumission/telecharger?id=<%= s.idSoumission %>" class="btn btn-sm btn-outline" target="_blank">
+                                                <i class="fas fa-eye"></i> Voir
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/js/main.js"></script>
+</body>
+</html>

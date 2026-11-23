@@ -1,0 +1,5 @@
+{
+  "name": "GesPed — Gestion des Ressources Pédagogiques",
+  "description": "Plateforme académique de gestion des ressources pédagogiques, devoirs, soumissions, filières, modules et utilisateurs pour l'enseignement supérieur.",
+  "requestFramePermissions": []
+}

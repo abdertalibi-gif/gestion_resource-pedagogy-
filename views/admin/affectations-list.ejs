@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affectations — GesPed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Raleway:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css?v=1">
+    <link rel="stylesheet" href="/assets/css/components.css?v=1">
+    <link rel="stylesheet" href="/assets/css/responsive.css?v=1">
+</head>
+<body class="app-layout">
+    <%- include('../includes/sidebar') %>
+    <div class="main-content">
+        <%- include('../includes/topbar') %>
+        <div class="content-wrapper">
+            <% if (msgSuccess) { %>
+                <div class="alert alert-success"><i class="fas fa-check-circle"></i> <%= msgSuccess %>
+                    <button class="alert-close" onclick="this.parentElement.remove()">&times;</button></div>
+            <% } %>
+            <% if (msgError) { %>
+                <div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> <%= msgError %>
+                    <button class="alert-close" onclick="this.parentElement.remove()">&times;</button></div>
+            <% } %>
+            <div class="welcome-banner">
+                <div class="welcome-text">
+                    <h2>Bienvenue, <%= nomComplet %> !</h2>
+                    <p>Gérez les affectations professeurs-modules.</p>
+                </div>
+                <i class="fas fa-link welcome-icon"></i>
+            </div>
+
+            <div class="page-header">
+                <h3>Affectations professeurs / modules</h3>
+                <a href="/admin/affectation/ajouter" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Nouvelle affectation</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr><th>Professeur</th><th>Module</th><th>Filière</th><th>Semestre</th><th>Année</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody>
+                        <% if (affectations && affectations.length > 0) { %>
+                            <% affectations.forEach(function(a) { %>
+                                <tr>
+                                    <td><strong><%= a.professeur.nomComplet || a.professeur.nom %></strong><br><small class="text-muted"><%= a.professeur.email %></small></td>
+                                    <td><span class="badge badge-module"><%= a.module.codeModule %></span> <%= a.module.nomModule %></td>
+                                    <td><%= a.module.filiere.nomFiliere %></td>
+                                    <td><%= a.module.semestre.nomSemestre %></td>
+                                    <td><%= a.anneeUniversitaire %></td>
+                                    <td>
+                                        <a href="/admin/affectation/supprimer?id=<%= a.idAffectation %>"
+                                           class="btn-action btn-delete" title="Supprimer"
+                                           onclick="return confirm('Supprimer cette affectation ?')"><i class="fas fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        <% } else { %>
+                            <tr><td colspan="6" class="text-center text-muted">Aucune affectation</td></tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/dashboard.js"></script>
+</body>
+</html>
